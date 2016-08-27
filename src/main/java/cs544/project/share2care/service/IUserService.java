@@ -3,7 +3,6 @@
  */
 package cs544.project.share2care.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import cs544.project.share2care.domain.User;
 
 /**
@@ -12,4 +11,6 @@ import cs544.project.share2care.domain.User;
  */
 public interface IUserService {
 	void saveNewUser(User user);
+	User getUserByUsername(String username);
+	String verifyUserByEmail(Long userId);
 }

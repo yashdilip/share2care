@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cs544.project.share2care.domain.User;
+import cs544.project.share2care.domain.UserRole;
 import cs544.project.share2care.service.impl.UserServiceImpl;
-
 
 /**
  * @author Dilip
@@ -29,31 +29,42 @@ public class UserController {
 	Logger logger = Logger.getLogger(UserController.class);
 	@Autowired
 	UserServiceImpl userService;
+
 	@RequestMapping("/handleLogin")
 	public String handleLogin() {
 		String view = "";
-		if (userHasAuthority("ROLE_ADMIN")){
+		if (userHasAuthority("ROLE_ADMIN")) {
 			view = "/admin/dashboard";
 			logger.info("admin logged into system");
-		}
-		else if (userHasAuthority("ROLE_USER")){
+		} else if (userHasAuthority("ROLE_USER")) {
 			view = "/user/dashboard";
 			logger.info("user logged into system");
 		}
 		return "redirect:" + view;
 	}
 
-	@RequestMapping(value="/signup", method=RequestMethod.GET)
-	public String signup(Model model){
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signup(Model model) {
 		model.addAttribute("user", new User());
 		return "/users/user/signup";
 	}
+
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
 	public String signupProcess(User user, RedirectAttributes redirectAttrs, Model model){
-		redirectAttrs.addFlashAttribute("usr", user.getUserName());
-		
-		return "redirect:/user/dashboard";
+		if(user!=null){
+			User usr = new User();
+			usr = userService.getUserByUsername(user.getUsername());
+			if(usr!=null){
+				model.addAttribute("msg", "User Already Exists");
+				return "/users/user/error";
+			}
+		}
+		user.setRole(UserRole.ROLE_USER);
+		userService.saveNewUser(user);
+		model.addAttribute("msg", user.getUsername());
+		return "/users/user/thankyou";
 	}
+	
 	public boolean userHasAuthority(String authority) {
 		List<GrantedAuthority> authorities = getUserAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {

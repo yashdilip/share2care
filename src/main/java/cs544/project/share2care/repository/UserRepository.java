@@ -13,6 +13,7 @@ import cs544.project.share2care.domain.User;
  *
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-	public User findByUserName(String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+	public User findByUsername(String username);
+
 }

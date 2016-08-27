@@ -24,8 +24,24 @@ public class UserServiceImpl implements IUserService {
 	 */
 	@Override
 	public void saveNewUser(User user) {
-		// TODO Auto-generated method stub
 		userRepository.save(user);
+	}
+	/* (non-Javadoc)
+	 * @see cs544.project.share2care.service.IUserService#getUserByUsername(java.lang.String)
+	 */
+	@Override
+	public User getUserByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
+	/* (non-Javadoc)
+	 * @see cs544.project.share2care.service.IUserService#verifyUserByEmail(java.lang.Long)
+	 */
+	@Override
+	public String verifyUserByEmail(Long userId) {
+		User user = userRepository.findOne(userId);
+		user.setEnabled(1);
+		userRepository.save(user);
+		return user.getUsername();
 	}
 
 }

@@ -6,12 +6,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-<link
-	href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.1/css/bootstrap.min.css"
-	th:href="@{/webjars/bootstrap/3.3.1/css/bootstrap.min.css}"
-	rel="stylesheet" media="screen" />
-<link href="../css/app.css" th:href="@{/css/app.css}" rel="stylesheet"
-	media="screen" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
 <body>
 
@@ -22,15 +18,12 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
                     <ul class="nav navbar-nav">
-                    	<li><a href="#" th:href="@{/volunteer/projectlist}">List Projects </a></li>
-                    	<li><a href="#" th:href="@{/volunteer/updateProject}">Offered Service </a></li>
-                    	<li><form name="searchForm" method="post" id="searchForm"
-							th:action="@{/volunteer/searchProject}">
-							<input style="margin-top: 15px" type="text" name="searchText"
-								placeholder="Search.." /> <input type="submit" value="search" />
-						</form></li>
-						<li><form th:action="@{/logout}" method="post" id="logoutForm"><input style="margin-top: 15px" type="submit" value="Logout"/></form></li>
-                    </ul>
+							<li><a href="#" th:href="@{/user/friend/list}">Show Friends</a></li>
+							<li><form th:action="@{/logout}" method="post"
+									id="logoutForm">
+									<input style="margin-top: 7px" class="btn btn-primary btn-block" type="submit" value="Logout" />
+								</form></li>
+						</ul>
                 </div>
             </div>
         </nav>
