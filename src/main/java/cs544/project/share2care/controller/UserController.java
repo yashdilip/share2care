@@ -5,10 +5,18 @@ package cs544.project.share2care.controller;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import cs544.project.share2care.domain.User;
+import cs544.project.share2care.service.UserServiceImpl;
 
 /**
  * @author Dilip
@@ -17,16 +25,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/login")
 public class UserController {
+	Logger logger = Logger.getLogger(UserController.class);
+	@Autowired
+	UserServiceImpl userService;
 	@RequestMapping("/handleLogin")
 	public String handleLogin() {
 		String view = "";
-		if (userHasAuthority("ROLE_ADMIN"))
+		if (userHasAuthority("ROLE_ADMIN")){
 			view = "/admin/dashboard";
-		else if (userHasAuthority("ROLE_USER"))
+			logger.info("admin logged into system");
+		}
+		else if (userHasAuthority("ROLE_USER")){
 			view = "/user/dashboard";
+			logger.info("user logged into system");
+		}
 		return "redirect:" + view;
 	}
 
+	@RequestMapping(value="/signup", method=RequestMethod.GET)
+	public String signup(Model model){
+		model.addAttribute("user", new User());
+		return "/users/user/signup";
+	}
+	@RequestMapping(value="/signup", method=RequestMethod.POST)
+	public String signupProcess(User user, RedirectAttributes redirectAttrs, Model model){
+		redirectAttrs.addFlashAttribute("usr", user.getUserName());
+		
+		return "redirect:/user/dashboard";
+	}
 	public boolean userHasAuthority(String authority) {
 		List<GrantedAuthority> authorities = getUserAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {
