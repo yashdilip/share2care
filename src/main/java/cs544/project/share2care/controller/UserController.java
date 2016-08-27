@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cs544.project.share2care.domain.User;
-import cs544.project.share2care.service.UserServiceImpl;
+import cs544.project.share2care.service.impl.UserServiceImpl;
+
 
 /**
  * @author Dilip
