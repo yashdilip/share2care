@@ -38,4 +38,68 @@ public class Resource {
 	@ManyToOne
 	@JoinColumn(name="eventId")
 	private Event event;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public ResourceStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ResourceStatus status) {
+		this.status = status;
+	}
+
+	public ResourceImportance getImportance() {
+		return importance;
+	}
+
+	public void setImportance(ResourceImportance importance) {
+		this.importance = importance;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
 }
