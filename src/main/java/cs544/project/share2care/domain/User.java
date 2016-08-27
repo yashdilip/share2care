@@ -3,11 +3,18 @@
  */
 package cs544.project.share2care.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,11 +26,10 @@ import javax.persistence.Table;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "userid")
 	private Long userId;
 
 	@Column(name = "username")
-	private String userName;
+	private String username;
 
 	@Column(name = "password")
 	private String password;
@@ -33,17 +39,30 @@ public class User {
 
 	@Column(name = "enabled")
 	private int enabled;
-
+	
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
+	
 	public User() {
 
 	}
+		
+	public User(String username, String password, String email, int enabled, UserRole role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.enabled = enabled;
+		this.role = role;
+	}
 
-	public User(User user) {
-		this.userId = user.userId;
-		this.userName = user.userName;
-		this.email = user.email;
-		this.password = user.password;
-		this.enabled = user.enabled;
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public int getEnabled() {
@@ -52,14 +71,6 @@ public class User {
 
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
-	}
-
-	public Long getUserid() {
-		return userId;
-	}
-
-	public void setUserid(Long userid) {
-		this.userId = userid;
 	}
 
 	public String getPassword() {
@@ -78,11 +89,19 @@ public class User {
 		this.email = email;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 }
