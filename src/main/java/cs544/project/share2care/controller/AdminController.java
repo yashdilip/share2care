@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import cs544.project.share2care.domain.User;
-import cs544.project.share2care.service.UserServiceImpl;
+import cs544.project.share2care.service.impl.UserServiceImpl;
 
 /**
  * Created by Dilip on 8/22/2016.

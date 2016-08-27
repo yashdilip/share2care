@@ -1,13 +1,14 @@
 /**
  * 
  */
-package cs544.project.share2care.service;
+package cs544.project.share2care.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cs544.project.share2care.domain.User;
 import cs544.project.share2care.repository.UserRepository;
+import cs544.project.share2care.service.IUserService;
 
 /**
  * @author Dilip
