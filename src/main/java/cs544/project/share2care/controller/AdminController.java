@@ -24,7 +24,7 @@ public class AdminController {
 		return "/users/admin/admin_dash";
 	}
 
-	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/adduser", method = RequestMethod.GET)
 	public String saveUser(Model model) {
 		model.addAttribute("user", new User());
 		return "/users/admin/useradd";
@@ -33,7 +33,7 @@ public class AdminController {
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public String saveUserForm(User user, Model model) {
 		userService.saveNewUser(user);
-		System.out.println(user.getName());
+		System.out.println(user.getUserName());
 		return "redirect:/admin/dashboard";
-	}
+	}*/
 }
