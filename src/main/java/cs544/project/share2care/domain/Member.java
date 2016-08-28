@@ -11,7 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -34,6 +37,11 @@ public class Member {
 
 	@OneToMany(mappedBy="member")
 	private List<Resource> resources;
+	
+	@ManyToMany
+	@JoinTable(name="member_circle", joinColumns = @JoinColumn(name="memberId"),
+	inverseJoinColumns = @JoinColumn(name="circleId"))
+	private List<Circle> circles;
 	
 	@Lob
 	private byte[] profilePictures;
