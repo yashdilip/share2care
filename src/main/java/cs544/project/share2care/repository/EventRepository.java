@@ -13,7 +13,7 @@ import cs544.project.share2care.domain.EventStatus;
 
 public interface EventRepository extends JpaRepository<Event, Integer>{
 	/* find event(s) */
-	Event findOne(int eventId);
+	//Event findOne(int eventId);
 	List<Event> findAll();
 	Page<Event> findAll(Pageable pageble);
 	List<Event> findByOwnerMemberIdOrderByStartDateTimeAsc(int memberId);
@@ -26,6 +26,6 @@ public interface EventRepository extends JpaRepository<Event, Integer>{
 	
 	
 	/* remove event(s) */
-	Long deleteByOwnerMemberId(int memberId);
+	//Long deleteByOwnerMemberId(int memberId);
 	
 }

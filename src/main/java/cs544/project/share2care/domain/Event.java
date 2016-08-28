@@ -62,6 +62,14 @@ public class Event {
 	
 	@Lob
 	private byte[] eventPictures;
+
+	public Member getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Member owner) {
+		this.owner = owner;
+	}
 	
 	/* end of instance variable declaration */
 	

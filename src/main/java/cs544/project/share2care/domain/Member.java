@@ -11,9 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -31,10 +29,10 @@ public class Member {
 	@Embedded
 	private Address address;
 	
-	@OneToMany(mappedBy="owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy="owner")
 	private List<Event> events;
 
-	@OneToMany(mappedBy="member", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy="member")
 	private List<Resource> resources;
 	
 	@Lob

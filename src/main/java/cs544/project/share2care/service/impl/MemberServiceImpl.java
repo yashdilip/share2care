@@ -3,6 +3,7 @@
  */
 package cs544.project.share2care.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
