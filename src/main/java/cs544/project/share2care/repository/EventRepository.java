@@ -11,21 +11,21 @@ import cs544.project.share2care.domain.Event;
 import cs544.project.share2care.domain.EventStatus;
 
 
-public interface EventDAO extends JpaRepository<Event, Integer>{
+public interface EventRepository extends JpaRepository<Event, Integer>{
 	/* find event(s) */
 	Event findOne(int eventId);
 	List<Event> findAll();
 	Page<Event> findAll(Pageable pageble);
-	List<Event> findByMemberIdOrderByStartDateTimeAsc(int memberId);
+	List<Event> findByOwnerMemberIdOrderByStartDateTimeAsc(int memberId);
 	List<Event> findByStartDateTime(Date date);
 	List<Event> findByStatus(EventStatus status);
-	List<Event> findByAddressCityIgnoreCase(String city);
-	List<Event> findByAddressCityIgnoreCaseAndStatus(String city, EventStatus status);
-	List<Event> findByAddressZip(String zip);
-	List<Event> findByAddressZipAndStatus(String zip, EventStatus status);
-	List<Event> findByResourceNameIgnoreCase(String resName);
+	List<Event> findByVenueAddressCityIgnoreCase(String city);
+	List<Event> findByVenueAddressCityIgnoreCaseAndStatus(String city, EventStatus status);
+	List<Event> findByVenueAddressZip(String zip);
+	List<Event> findByVenueAddressZipAndStatus(String zip, EventStatus status);
+	
 	
 	/* remove event(s) */
-	Long deleteByMemberId(int memberId);
+	Long deleteByOwnerMemberId(int memberId);
 	
 }
