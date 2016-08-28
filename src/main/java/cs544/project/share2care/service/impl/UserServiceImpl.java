@@ -4,6 +4,7 @@
 package cs544.project.share2care.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import cs544.project.share2care.domain.User;
@@ -14,7 +15,7 @@ import cs544.project.share2care.service.IUserService;
  * @author Dilip
  *
  */
-@Service
+@Component
 public class UserServiceImpl implements IUserService {
 
 	@Autowired

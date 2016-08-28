@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
-import cs544.project.share2care.service.impl.MemberServiceImpl;
-import cs544.project.share2care.service.impl.UserServiceImpl;
+import cs544.project.share2care.service.IMemberService;
+import cs544.project.share2care.service.IUserService;
 
 /**
  * @author Dilip
@@ -27,10 +27,10 @@ import cs544.project.share2care.service.impl.UserServiceImpl;
 public class MemberController {
 
 	@Autowired
-	private UserServiceImpl userService;
+	private IUserService userService;
 	
 	@Autowired
-	private MemberServiceImpl memberService;
+	private IMemberService memberService;
 
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String showMemberDashboard(Model model) {

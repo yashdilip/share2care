@@ -3,10 +3,10 @@
  */
 package cs544.project.share2care.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
@@ -18,6 +18,7 @@ import cs544.project.share2care.service.IMemberService;
  * @author Dilip
  *
  */
+@Component
 public class MemberServiceImpl implements IMemberService{
 
 	@Autowired
