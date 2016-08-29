@@ -119,4 +119,11 @@ public class Member {
 		resource.setMember(null);
 		this.resources.remove(resource);
 	}
+	public List<Circle> getCircles() {
+		return circles;
+	}
+	public void setCircles(List<Circle> circles) {
+		this.circles = circles;
+	}
+	
 }

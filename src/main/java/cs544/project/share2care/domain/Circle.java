@@ -9,7 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * @author Dilip
@@ -25,6 +28,10 @@ public class Circle {
 	@ManyToMany(mappedBy="circles")
 	private List<Member> members;
 
+	@OneToOne
+	@JoinColumn(name="ownerId")
+	private Member owner;
+	
 	public Circle() {
 	}
 
@@ -50,6 +57,14 @@ public class Circle {
 
 	public void setMembers(List<Member> members) {
 		this.members = members;
+	}
+
+	public Member getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Member owner) {
+		this.owner = owner;
 	}
 		
 }
