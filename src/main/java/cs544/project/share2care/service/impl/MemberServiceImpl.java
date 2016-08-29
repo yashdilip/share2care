@@ -27,11 +27,16 @@ public class MemberServiceImpl implements IMemberService{
 	private MemberRepository memberRepository;
 	@Override
 	public Member getLoggedInMemeberByMemberName(String name) {
-		User user = userRepository.findByUsername(name);
-		Member member = new Member();
-		member.setFirstName(user.getUsername());
-		member.setLastName("");
-		member.setEmail(user.getEmail());
+		
+		Member member = memberRepository.getOneMemberByLoggedInUsername(name);
+		if(member==null){
+			User user = userRepository.findByUsername(name);
+			Member mem = new Member();
+			mem.setFirstName(user.getUsername());
+			mem.setLastName("");
+			mem.setEmail(user.getEmail());
+			return mem;
+		}
 		return member;
 	}
 

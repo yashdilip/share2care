@@ -14,6 +14,7 @@ import cs544.project.share2care.domain.Member;
  *
  */
 public interface MemberRepository extends JpaRepository<Member, Integer>{
-	@Query("from User u where u.username = :username")
-	Member getOneMemberByLoggedInUsername(@Param("username") String username);
+	@Query("from Member m where m.firstName = :firstName")
+	Member getOneMemberByLoggedInUsername(@Param("firstName") String firstName);
+	
 }
