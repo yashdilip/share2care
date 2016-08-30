@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.Constraint;
 
 /**
  * @author Dilip
@@ -25,6 +26,7 @@ import javax.persistence.OneToMany;
 public class Member {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int memberId;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -43,8 +45,9 @@ public class Member {
 	inverseJoinColumns = @JoinColumn(name="circleId"))
 	private List<Circle> circles;
 	
-	@Lob
-	private byte[] profilePictures;
+	private String imageLocation;
+	
+	@Lob byte[] profilePictures;
 	
 	public Member() {
 	}
@@ -124,6 +127,12 @@ public class Member {
 	}
 	public void setCircles(List<Circle> circles) {
 		this.circles = circles;
+	}
+	public String getImageLocation() {
+		return imageLocation;
+	}
+	public void setImageLocation(String imageLocation) {
+		this.imageLocation = imageLocation;
 	}
 	
 }
