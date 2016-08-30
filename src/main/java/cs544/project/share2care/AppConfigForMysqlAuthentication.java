@@ -3,7 +3,10 @@
  */
 package cs544.project.share2care;
 
+import javax.servlet.MultipartConfigElement;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +14,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
 
 /**
  * @author Dilip
@@ -44,12 +46,12 @@ public class AppConfigForMysqlAuthentication {
 	 * viewResolver.setSuffix(".jsp"); return viewResolver; }
 	 */
 
-	 /*@Bean
-	    public CommonsMultipartResolver multipartResolver() {
-	        CommonsMultipartResolver rslv = new CommonsMultipartResolver();
-	        rslv.setMaxUploadSize(Long.parseLong(environment.getProperty("resources.maxUploadSize")));
-	        return rslv;
-	}*/
-	 
+	@Bean
+	MultipartConfigElement multipartConfigElement() {
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		factory.setMaxFileSize("5120MB");
+		factory.setMaxRequestSize("5120MB");
+		return factory.createMultipartConfig();
+	}
 
 }
