@@ -37,6 +37,9 @@ public class Member {
 	@OneToMany(mappedBy="owner")
 	private List<Event> events;
 
+	@OneToMany(mappedBy="participant")
+	private List<EventParticipant> eventParticipating;
+	
 	@OneToMany(mappedBy="member")
 	private List<Resource> resources;
 	
