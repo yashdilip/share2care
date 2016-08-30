@@ -36,6 +36,12 @@ public class EventServiceImpl implements IEventService {
 		eventRepository.delete(event);
 		
 	}
+	
+	@Override
+	public Event findById(int id) {
+		return eventRepository.findById(id);
+		
+	}
 
 	@Override
 	public Long deleteByOwnerMemberId(int memberId) {
@@ -44,12 +50,12 @@ public class EventServiceImpl implements IEventService {
 
 	@Override
 	public List<Event> findUpcomingEvents(Member participant) {
-		return eventRepository.findUpcomingEvents(participant);
+		return eventRepository.findByParticipantsParticipantAndStartDateTimeAfter(participant, new Date());
 	}
 
 	@Override
 	public List<Event> findPastEvents(Member participant) {
-		return eventRepository.findPastEvents(participant);
+		return eventRepository.findByParticipantsParticipantAndEndDateTimeBefore(participant, new Date());
 	}	
 	
 	@Override

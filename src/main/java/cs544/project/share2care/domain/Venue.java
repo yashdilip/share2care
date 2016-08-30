@@ -28,10 +28,48 @@ public class Venue {
 	@Embedded
 	private Address address;
 	
-	/* end of instance variables declaration */
+/* end of instance variables declaration */
 	
 	/* constructor definition */
 	
+	public Venue(){}
+	
 	/* setters and getters */
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public GeoLocation getGeoLocation() {
+		return geoLocation;
+	}
+
+	public void setGeoLocation(GeoLocation geoLocation) {
+		this.geoLocation = geoLocation;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
+	
+	
+	
 
 }

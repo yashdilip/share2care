@@ -47,6 +47,9 @@ public class Event {
 	@Enumerated(EnumType.STRING)
 	private EventStatus status;
 	
+	@Enumerated(EnumType.STRING)
+	private EventVisibility visibility;
+	
 	@OneToMany(mappedBy="event")
 	private List<EventParticipant> participants;
 	
@@ -61,8 +64,25 @@ public class Event {
 	private EventCategory category;
 	
 	@Lob
-	private byte[] eventPictures;
+	private byte[] eventPicture;
 
+	
+	
+	/* end of instance variable declaration */
+	
+	/* constructor definition goes here */
+	public Event(){}
+
+
+	/* Setters and getters */
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public Member getOwner() {
 		return owner;
 	}
@@ -70,15 +90,95 @@ public class Event {
 	public void setOwner(Member owner) {
 		this.owner = owner;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Date getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(Date startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public Date getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(Date endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
+	public EventStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(EventStatus status) {
+		this.status = status;
+	}	
 	
-	/* end of instance variable declaration */
-	
-	/* constructor definition goes here */
-	
-	/* Setters and getters */
-	
-	
-	
+
+	public EventVisibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(EventVisibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public List<EventParticipant> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<EventParticipant> participants) {
+		this.participants = participants;
+	}
+
+	public List<Resource> getResources() {
+		return resources;
+	}
+
+	public void setResources(List<Resource> resources) {
+		this.resources = resources;
+	}
+
+	public Venue getVenue() {
+		return venue;
+	}
+
+	public void setVenue(Venue venue) {
+		this.venue = venue;
+	}
+
+	public EventCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(EventCategory category) {
+		this.category = category;
+	}
+
+	public byte[] getEventPicture() {
+		return eventPicture;
+	}
+
+	public void setEventPicture(byte[] eventPicture) {
+		this.eventPicture = eventPicture;
+	}
 	
 
 }

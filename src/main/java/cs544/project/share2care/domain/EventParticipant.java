@@ -52,10 +52,7 @@ public class EventParticipant {
 
 	public void setEvent(Event event) {
 		this.event = event;
-	}
-	
-	
-	
+	}	
 	
 
 }

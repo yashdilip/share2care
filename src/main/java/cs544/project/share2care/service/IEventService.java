@@ -16,16 +16,12 @@ import cs544.project.share2care.domain.Member;
 public interface IEventService {
 	void save(Event event);
 	void delete(Event event);
+	Event findById(int id);
 	//Delete all events of a specific member
 	Long deleteByOwnerMemberId(int memberId);
 	//Upcoming events which member is going to attend
 	List<Event> findUpcomingEvents(Member owner);
 	List<Event> findPastEvents(Member owner);
-	//Include all upcoming events within the member's circle
-//	List<Event> findUpcomingEventsWithinCircle(Member owner);
-//	List<Event> findEventsWithinCircleByCity(Member owner, String city);
-//	List<Event> findEventsWithinCircleByDate(Member owner, Date date);
-//	List<Event> discoverEventsWithinCircleByCityAndDate(Member owner, String city, Date date);
 	//Upcoming events in a given city
 	List<Event> findEventsByCity(String city);
 	//Upcoming events on a given date

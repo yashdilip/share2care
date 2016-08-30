@@ -8,6 +8,13 @@ package cs544.project.share2care.domain;
  *
  */
 public enum EventCategory {
-	BIRTHDAY, PARTY, WEDDING, MEMORIAL, CONCERT, CULTURE_SHOW, OTHER
+	BIRTHDAY("birthday"), PARTY("party"), WEDDING("wedding"), OTHER("other");
+	private String name;
+	private EventCategory(String name){
+		this.name= name;
+	}
+	public String getEventCategory(){
+		return name;
+	}
 
 }

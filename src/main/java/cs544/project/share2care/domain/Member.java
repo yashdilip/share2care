@@ -34,6 +34,9 @@ public class Member {
 	
 	@OneToMany(mappedBy="owner")
 	private List<Event> events;
+	
+	@OneToMany(mappedBy="participant")
+	private List<EventParticipant> eventsParticipating;
 
 	@OneToMany(mappedBy="member")
 	private List<Resource> resources;
@@ -124,6 +127,12 @@ public class Member {
 	}
 	public void setCircles(List<Circle> circles) {
 		this.circles = circles;
+	}
+	public List<EventParticipant> getEventsParticipating() {
+		return eventsParticipating;
+	}
+	public void setEventsParticipating(List<EventParticipant> eventsParticipating) {
+		this.eventsParticipating = eventsParticipating;
 	}
 	
 }

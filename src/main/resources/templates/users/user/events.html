@@ -3,18 +3,16 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Share2Care</title>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
-
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
@@ -54,6 +52,15 @@ footer {
 </style>
 </head>
 <body>
-	<div th:replace="fragments/fragment :: fragment-body"></div>
+
+	<nav th:replace="fragments/fragment :: header"></nav>
+	<div class="container-fluid " th:fragment="content">
+		<div class="row content">
+			<div th:replace="fragments/fragment :: leftsidenav"></div>
+			<div th:replace="${view} :: content"></div>
+			<div th:replace="fragments/fragment :: rightsidenav"></div>
+		</div>
+	</div>
+	<footer th:replace="fragments/fragment :: footer"></footer>
 </body>
 </html>
