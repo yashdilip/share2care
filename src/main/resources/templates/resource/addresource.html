@@ -1,78 +1,138 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
-
-<title>Add Project</title>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
 <meta charset="utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-
-<link
-	href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.1/css/bootstrap.min.css"
-	th:href="@{/webjars/bootstrap/3.3.1/css/bootstrap.min.css}"
-	rel="stylesheet" media="screen" />
-<link href="../css/app.css" th:href="@{/css/app.css}" rel="stylesheet"
-	media="screen" />
-
+<title>Share2Care | Add Resource</title>
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
 	<div class="container">
-		<!--/*/ <th:block th:include="/users/admin/admin_dash :: header"></th:block> /*/-->
-	</div>
-	<div class="container">
+		<!--/*/ <th:block th:include="fragments/header_loggedin :: header"></th:block> /*/-->
 
-		<h2>Add Resource</h2>
-		<div>
-			<form class="form-horizontal" th:object="${resource}"
-				th:action="@{/resource/addresource}" method="post">
-				<!--  <input type="hidden" th:field="*{id}"/>
-            <input type="hidden" th:field="*{version}"/> -->
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Resource Name:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" th:field="*{name}" />
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="container">
+
+					<h2 class="text-center">Add Resource</h2>
+					<div>
+						<form class="form-horizontal" th:object="${resource}"
+							th:action="@{/resource/addresource}" method="post"
+							enctype="multipart/form-data">
+							 <input type="hidden" th:value="${eventId}"  name="eventId"/>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Resource Name :</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control"
+										th:field="${resource.name}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Resource Description :</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control"
+										th:field="${resource.description}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Resource Quantity :</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control"
+										th:field="${resource.quantity}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Resource Status :</label>
+								<div class="col-sm-6">
+									<select th:field="${resource.status}">
+										<option
+											th:each="status : ${T(cs544.project.share2care.domain.ResourceStatus).values()}"
+											th:value="${status}" th:text="${status}" ></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Resource Importance :</label>
+								<div class="col-sm-6">
+									<select th:field="${resource.importance}">
+										<option
+											th:each="importance : ${T(cs544.project.share2care.domain.ResourceImportance).values()}"
+											th:value="${importance}" th:text="${importance}" ></option>
+									</select>
+								</div>
+							</div>
+					
+							<div class="row">
+								<button type="submit" class="btn btn-default">Submit</button>
+								<a href="/user/dashboard" class="btn btn-primary">Cancel</a>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-sm-4">
+
+				<div class="panel-group" id="accordion" role="tablist"
+					aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne" aria-expanded="true"
+									aria-controls="collapseOne"> Member Service </a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<a href="#" th:href="@{/user/profile}" class="list-group-item">View/Edit
+									Profile</a> <a href="#" th:href="@{/user/uploadFile}" class="list-group-item">Upload Image</a>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingTwo">
+							<h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseTwo"
+									aria-expanded="false" aria-controls="collapseTwo"> Circle
+									Management </a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body">
+								<a href="#" th:href="@{/circle/create}" class="list-group-item">Create
+									New Circle</a> <a href="#" th:href="@{/circle/view}"
+									class="list-group-item">View Circle</a>
+									<a href="#" class="list-group-item">Join Circle</a>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingThree">
+							<h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseThree"
+									aria-expanded="false" aria-controls="collapseThree"> Make
+									Friends </a>
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body">
+								<a href="#" th:href="@{/user/profile}" class="list-group-item">Discover
+									Friends</a>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Resource Description:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" th:field="*{description}" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Resource Quantity:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" th:field="*{quantity}" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Resource Status:</label>
-					<div class="col-sm-10">
-						<select>
-							<option
-								th:each="status : ${T(cs544.project.share2care.domain.ResourceStatus).values()}"
-								th:value="${status}" th:text="${status}"></option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Resource Importance:</label>
-					<div class="col-sm-10">
-						<select>
-							<option
-								th:each="importance : ${T(cs544.project.share2care.domain.ResourceImportance).values()}"
-								th:value="${importance}" th:text="${importance}"></option>
-						</select>
-					</div>
-				</div>
-				<div class="row">
-					<button type="submit" class="btn btn-default">Submit</button>
-				</div>
-				<a href="/admin/dashboard" class="btn btn-primary">Go to Admin
-					Dashboard</a>
-			</form>
+			</div>
 		</div>
 	</div>
+
+
 
 </body>
 </html>

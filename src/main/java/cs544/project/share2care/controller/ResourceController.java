@@ -2,6 +2,8 @@ package cs544.project.share2care.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cs544.project.share2care.domain.Event;
 import cs544.project.share2care.domain.Resource;
+import cs544.project.share2care.service.IEventService;
 import cs544.project.share2care.service.IResourceService;
 
 /**
@@ -25,14 +29,22 @@ public class ResourceController {
 	@Autowired
 	IResourceService resourceService;
 
-	@RequestMapping(value = "addresource", method = RequestMethod.GET)
-	public String addResource(Model model) {
-		model.addAttribute("resource", new Resource());
+	@Autowired
+	IEventService eventService;
+
+	@RequestMapping(value = "addresource/{eventId}", method = RequestMethod.GET)
+	public String addResource(@PathVariable("eventId") int eventId, Model model) {
+		Resource resource = new Resource();
+		model.addAttribute("resource", resource);
+		model.addAttribute("eventId", eventId);
 		return "/resource/addresource";
 	}
 
-	@RequestMapping(value = "addresource", method = RequestMethod.POST)
-	public String addResourceFormProcess(Resource resource) {
+	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
+	public String addResourceFormProcess(Model model, Resource resource, HttpServletRequest request) {
+		String eventIdStr = request.getParameter("eventId");
+		Event event = eventService.findById(Integer.valueOf(eventIdStr));
+		resource.setEvent(event);
 		resourceService.saveOrUpdateResource(resource);
 		return "redirect:/resource/resourcelist";
 	}

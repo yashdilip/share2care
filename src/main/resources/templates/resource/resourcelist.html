@@ -1,57 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
-<title>User List</title>
-<meta charset="utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-
-<link
-	href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.1/css/bootstrap.min.css"
-	th:href="@{/webjars/bootstrap/3.3.1/css/bootstrap.min.css}"
-	rel="stylesheet" media="screen" />
-<link href="../css/app.css" th:href="@{/css/app.css}" rel="stylesheet"
-	media="screen" />
+<head>
+<title>Share2Care | New Circle</title>
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
 	<div class="container">
-		<!--/*/ <th:block th:include="/users/admin/admin_dash :: header"></th:block> /*/-->
-	</div>
-	<div class="container">
-		<div th:if="${not #lists.isEmpty(resources)}">
-			<h2>resource List</h2>
-			<table class="table table-striped">
-				<tr>
-					<th>Resource Id</th>
-					<th>Resource Name</th>
-					<th>Resource Description</th>
-					<th>Resource Quantity</th>
-					<th>Resource Status</th>
-					<th>Resource Importance</th>
+		<!--/*/ <th:block th:include="fragments/header_loggedin :: header"></th:block> /*/-->
 
-				</tr>
-				<tr th:each="resource : ${resources}">
-					<td th:text="${resource.id}"></td>
-					<td th:text="${resource.name}"></td>
-					<td th:text="${resource.description}"></td>
-					<td th:text="${resource.quantity}"></td>
-					<td th:text="${resource.status}"></td>
-					<td th:text="${resource.importance}"></td>
-				
-					<td><a th:href="${'/resource/' + resource.id}"
-						class="btn btn-primary">View</a></td>
-					<td><a
-						th:href="${'/resource/edit/' + resource.id}"
-						class="btn btn-warning">Edit</a></td>
-					<td><a
-						th:href="${'/resource/delete/' + resource.id}"
-						class="btn btn-danger">Delete</a></td>
-				</tr>
-			</table>
-			<a href="/admin/dashboard" class="btn btn-primary">Go to Admin
-				Dashboard</a>
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="container">
+
+					<h2 class="center">All Resources You Have!</h2>
+					<div>
+						<div th:if="${not #lists.isEmpty(resources)}">
+							<table class="table table-striped">
+								<tr>
+									<th>Resource Id</th>
+									<th>Resource Name</th>
+									<th>Resource Description</th>
+									<th>Resource Quantity</th>
+									<th>Resource Status</th>
+									<th>Resource Importance</th>
+
+								</tr>
+								<tr th:each="resource : ${resources}">
+									<td th:text="${resource.id}"></td>
+									<td th:text="${resource.name}"></td>
+									<td th:text="${resource.description}"></td>
+									<td th:text="${resource.quantity}"></td>
+									<td th:text="${resource.status}"></td>
+									<td th:text="${resource.importance}"></td>
+
+									<td><a th:href="${'/resource/' + resource.id}"
+										class="btn btn-primary">View</a></td>
+									<td><a th:href="${'/resource/edit/' + resource.id}"
+										class="btn btn-warning">Edit</a></td>
+									<td><a th:href="${'/resource/delete/' + resource.id}"
+										class="btn btn-danger">Delete</a></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--  	<div class="col-sm-4">
+
+				<div class="panel-group" id="accordion" role="tablist"
+					aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne" aria-expanded="true"
+									aria-controls="collapseOne"> Member Service </a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<a href="#" th:href="@{/user/profile}" class="list-group-item">View/Edit
+									Profile</a> <a href="#" th:href="@{/user/uploadFile}"
+									class="list-group-item">Upload Image</a>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingTwo">
+							<h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseTwo"
+									aria-expanded="false" aria-controls="collapseTwo"> Circle
+									Management </a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body">
+								<a href="#" th:href="@{/circle/create}" class="list-group-item">Create
+									New Circle</a> <a href="#" th:href="@{/circle/view}"
+									class="list-group-item">View Circle</a> <a href="#"
+									class="list-group-item">Join Circle</a>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingThree">
+							<h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseThree"
+									aria-expanded="false" aria-controls="collapseThree"> Make
+									Friends </a>
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body">
+								<a href="#" th:href="@{/user/profile}" class="list-group-item">Discover
+									Friends</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> -->
 		</div>
+
+
 	</div>
+
+
 
 </body>
 </html>
