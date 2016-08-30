@@ -5,15 +5,20 @@ package cs544.project.share2care.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,7 +92,7 @@ public class EventController {
 			eventService.save(event);
 			Venue venue = new Venue();
 			model.addAttribute("venue", venue);
-			view = "users/user/addEventVenue";
+			view = "redirect:/event/"+event.getId();
 		} else {
 			view = "users/user/createNewEvent";
 		}
@@ -112,6 +117,17 @@ public class EventController {
 		event.setEventPicture(eventPhoto.getBytes());
 		eventService.save(event);
 		return "redirect:/event/" + event.getId();
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+//		dateFormat.setLenient(true);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy h:mm:ss");
+		dateFormat.setLenient(true);
+		
+		binder.registerCustomEditor(Date.class, "event.startDateTime", new CustomDateEditor(dateFormat, true));
+		binder.registerCustomEditor(Date.class, "event.endDateTime", new CustomDateEditor(dateFormat, true));				
 	}
 	
 

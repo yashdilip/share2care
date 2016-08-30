@@ -36,7 +36,8 @@
 					</select>
 				</div>
 
-				<div th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
+				<div
+					th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
 					<label class="control-label col-sm-2" for="name">Name:</label>
 
 					<div class="col-sm-4">
@@ -47,12 +48,37 @@
 				</div>
 				<div
 					th:class="${#fields.hasErrors('description')}? 'control-group error' : 'form-group' ">
-					<label class="control-label col-sm-2" for="description">Description:</label>
+					<label class="control-label col-sm-4" for="description">Description:</label>
 					<div class="col-sm-4">
 						<textarea th:field="*{description}" class="form-control" rows="3"
 							id="description"></textarea>
 					</div>
 				</div>
+				<div class="form-group">
+				<label class="control-label col-sm-3" for="datetimepicker1">Event starting date/time:</label>
+					<div id="datetimepicker1" class="input-append date col-sm-4">
+						<input data-format="dd/MM/yyyy hh:mm:ss" type="text" th:field="*{startDateTime}" ></input> <span
+							class="add-on"> <i data-time-icon="icon-time"
+							data-date-icon="icon-calendar"> </i>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+				<label class="control-label col-sm-3" for="datetimepicker2">Event ending date/time:</label>
+					<div id="datetimepicker2" class="input-append date col-sm-4">
+						<input data-format="dd/MM/yyyy hh:mm:ss" type="text" th:field="*{endDateTime}"></input> <span
+							class="add-on"> <i data-time-icon="icon-time"
+							data-date-icon="icon-calendar"> </i>
+						</span>
+					</div>
+				</div>
+				<script type="text/javascript">
+					$(function() {
+						$('.date').datetimepicker({
+							language : 'en'
+						});
+					});
+				</script>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
