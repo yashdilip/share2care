@@ -7,46 +7,55 @@
 </head>
 <body>
 	<div th:fragment="content">
-		<form id="createNewEvent" th:action="@{/event/create}" method="post"
-			th:object="${event}">
-			<h2 class="form-signin-heading">Create New Event</h2>
-			<div class="alert alert-error" th:if="${#fields.hasErrors('*')}">
-				<ul class="unstyled">
-					<li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input
-						is incorrect</li>
-				</ul>
-			</div>
+		<div>
+			<form id="createNewEvent" th:action="@{/event/create}" method="post"
+				th:object="${event}" class="form-horizontal">
+				<h2 class="form-signin-heading">Create New Event</h2>
+				<div class="alert alert-error" th:if="${#fields.hasErrors('*')}">
+					<ul class="unstyled">
+						<li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input
+							is incorrect</li>
+					</ul>
+				</div>
 
-			<div class="form-group">
-				<label for="visibility">Event visibility:</label> <select class="form-control"
-					id="visibility" th:field="*{visibility}">
-					<option th:each="visibility : ${visibilities}" 
-          th:value="${visibility}" th:text="${visibility.eventVisibility}"></option>				
-				</select>
-			</div>
-			
-			<div class="form-group">
-				<label for="category">Event category:</label> <select class="form-control"
-					id="category" th:field="*{category}">
-					<option th:each="category : ${categories}" 
-          th:value="${category}" th:text="${category.eventCategory}"></option>				
-				</select>
-			</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="visibility">Event
+						visibility:</label> <select class="form-control col-sm-2" id="visibility"
+						th:field="*{visibility}">
+						<option th:each="visibility : ${visibilities}"
+							th:value="${visibility}" th:text="${visibility.eventVisibility}"></option>
+					</select>
+				</div>
 
-			<div th:class="${#fields.hasErrors('name')}? 'control-group error'">
-				<label for="name">Name:</label> <input type="text" th:field="*{name}"
-					class="form-control" placeholder="event name" id="name"/>
-			</div>
-			<div
-				th:class="${#fields.hasErrors('description')}? 'control-group error'">
-				<label for="description">Description:</label>
-				<textarea th:field="*{description}" class="form-control" rows="3"
-					id="description"></textarea>
-			</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="category">Event
+						category:</label> <select class="form-control col-sm-2" id="category"
+						th:field="*{category}">
+						<option th:each="category : ${categories}" th:value="${category}"
+							th:text="${category.eventCategory}"></option>
+					</select>
+				</div>
 
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
+				<div th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
+					<label class="control-label col-sm-2" for="name">Name:</label>
 
+					<div class="col-sm-4">
+						<input type="text" th:field="*{name}" class="form-control"
+							placeholder="event name" id="name" />
+					</div>
+
+				</div>
+				<div
+					th:class="${#fields.hasErrors('description')}? 'control-group error' : 'form-group' ">
+					<label class="control-label col-sm-2" for="description">Description:</label>
+					<div class="col-sm-4">
+						<textarea th:field="*{description}" class="form-control" rows="3"
+							id="description"></textarea>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
 	</div>
 </body>
 </html>
