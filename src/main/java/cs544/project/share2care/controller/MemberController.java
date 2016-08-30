@@ -3,7 +3,11 @@
  */
 package cs544.project.share2care.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 
@@ -12,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -21,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,19 +45,21 @@ import cs544.project.share2care.service.IUserService;
 @Controller
 @RequestMapping("/user")
 public class MemberController {
+	@Autowired
+	private Environment env;
 
 	@Autowired
 	private IUserService userService;
-	
+
 	@Autowired
 	private IMemberService memberService;
 
 	@Autowired
 	private ICircleService circleService;
-	
+
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String showMemberDashboard(Model model, Principal principal, HttpSession session) {
-//		model.addAttribute("firstname", principal.getName());
+		// model.addAttribute("firstname", principal.getName());
 		session.setAttribute("member", memberService.getLoggedInMemeberByMemberName(principal.getName()));
 		return "/users/user/user_dash";
 	}
@@ -62,13 +72,14 @@ public class MemberController {
 		model.addAttribute("members", members);
 		return "friendlist";
 	}
-	
-/*	@RequestMapping(value="/friend/add/{memberId}", method = RequestMethod.POST)
-	public String addFriend(Member member, Principal principal){
-		circleService.addMember(member);
-		return "redirect:/user/friend/search";
-	}*/
-	
+
+	/*
+	 * @RequestMapping(value="/friend/add/{memberId}", method =
+	 * RequestMethod.POST) public String addFriend(Member member, Principal
+	 * principal){ circleService.addMember(member); return
+	 * "redirect:/user/friend/search"; }
+	 */
+
 	@RequestMapping(value = "/verify/{userId}", method = RequestMethod.GET)
 	public String confirmEmailAddress(@PathVariable("userId") Long userId, Model model) {
 		System.out.println("i am here");
@@ -80,68 +91,96 @@ public class MemberController {
 		model.addAttribute("message", "User not found!!");
 		return "/users/user/error";
 	}
-	
-	@RequestMapping(value="/profile", method = RequestMethod.GET)
-	public String showProfile(Model model, Principal principal, HttpSession session){
+
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String showProfile(Model model, Principal principal, HttpSession session) {
 		String name = principal.getName();
-		Member member = memberService.getLoggedInMemeberByMemberName(((Member)session.getAttribute("member")).getFirstName());
+		Member member = memberService
+				.getLoggedInMemeberByMemberName(((Member) session.getAttribute("member")).getFirstName());
 		model.addAttribute("member", member);
 		return "/users/user/memberprofile";
 	}
-	
-	@RequestMapping(value="/profile", method = RequestMethod.POST)
-	public String editProfile(Member member, Principal principal, HttpSession session) throws IOException{
 
-		Member m = memberService.getLoggedInMemeberByMemberName(((Member)session.getAttribute("member")).getFirstName());
-		
-		//m.setProfilePictures(myFile.getBytes());
+	@RequestMapping(value = "/profile", method = RequestMethod.POST)
+	public String editProfile(Member member, Principal principal, HttpSession session) throws IOException {
+
+		Member m = memberService
+				.getLoggedInMemeberByMemberName(((Member) session.getAttribute("member")).getFirstName());
+
+		// m.setProfilePictures(myFile.getBytes());
 		m.setFirstName(member.getFirstName());
 		m.setLastName(member.getLastName());
 		m.setEmail(member.getEmail());
 		m.setPhoneNumber(member.getPhoneNumber());
 		m.setProfilePictures(member.getProfilePictures());
-		//m.setImageLocation(fileurl);
+		// m.setImageLocation(fileurl);
 		m.setAddress(member.getAddress());
 		m.setCircles(member.getCircles());
 		m.setEvents(member.getEvents());
 		m.setResources(member.getResources());
-		
+
 		session.setAttribute("member", m);
 		memberService.saveMember(m);
 
-		if(principal.getName().equalsIgnoreCase(member.getFirstName())){
+		if (principal.getName().equalsIgnoreCase(member.getFirstName())) {
 
-		}else{
+		} else {
 			User user = userService.getUserByUsername(principal.getName());
 			user.setUsername(member.getFirstName().toLowerCase());
 			userService.saveNewUser(user);
-			
-			
+
 		}
 		return "redirect:/user/dashboard";
 	}
-	
-	
-	@RequestMapping(value="/imageupload", method=RequestMethod.GET)
-	public String uploadImage(Model model){
-		return "";
+
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
+	public String uploadImage(Model model) {
+		return "/users/user/fileupload";
 	}
-	
-	@RequestMapping(value="/imageupload", method=RequestMethod.POST)
-	public String uploadImageProcess(@RequestParam("myFile") MultipartFile myFile, Principal principal) throws IOException{
+
+	/*@RequestMapping(value = "/imageupload", method = RequestMethod.POST)
+	public String uploadImageProcess(@RequestParam("myFile") MultipartFile myFile, Principal principal)
+			throws IOException {
 		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		member.setProfilePictures(myFile.getBytes());
 		memberService.saveMember(member);
 		return "redirect:/user/dashboard";
+	}*/
+
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	
+	public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, HttpSession session) {
+		Member member = (Member) session.getAttribute("member");
+		
+		try {
+			// Get the filename and build the local file path
+			String filename = uploadfile.getOriginalFilename();
+			String directory = env.getProperty("netgloo.paths.uploadedFiles");
+			String filepath = Paths.get(directory, filename).toString();
+			
+			member.setImageLocation(filepath);
+			member.setProfilePictures(uploadfile.getBytes());
+			memberService.saveMember(member);
+			System.out.println(filepath+"-------> "+directory+" -------->"+filename);
+			// Save the file locally
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			stream.write(uploadfile.getBytes());
+			stream.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return "redirect:/user/dashboard";
+		//return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-	    return "redirect:/login?logout";
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/login?logout";
 	}
-	
+
 }
