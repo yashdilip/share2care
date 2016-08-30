@@ -50,4 +50,20 @@ public class MemberServiceImpl implements IMemberService{
 		return memberRepository.findAll();
 	}
 
+
+	@Override
+	public List<Member> findAllMembersNotMe(Integer memberId) {
+		return memberRepository.getAllMembersExceptMe(memberId);
+	}
+
+	@Override
+	public List<Member> findAllMembersOfCircleByCircleId(Integer circleId) {
+		return memberRepository.getAllMembersOfCircleByCircleId(circleId);
+	}
+
+	@Override
+	public Member getMemberByMemberId(Integer memberId) {
+		return memberRepository.findOne(memberId);
+	}
+
 }

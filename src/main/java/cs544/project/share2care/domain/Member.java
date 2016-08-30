@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.Constraint;
 
 /**
  * @author Dilip
@@ -25,6 +26,7 @@ import javax.persistence.OneToMany;
 public class Member {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int memberId;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -34,9 +36,6 @@ public class Member {
 	
 	@OneToMany(mappedBy="owner")
 	private List<Event> events;
-	
-	@OneToMany(mappedBy="participant")
-	private List<EventParticipant> eventsParticipating;
 
 	@OneToMany(mappedBy="member")
 	private List<Resource> resources;
@@ -46,8 +45,9 @@ public class Member {
 	inverseJoinColumns = @JoinColumn(name="circleId"))
 	private List<Circle> circles;
 	
-	@Lob
-	private byte[] profilePictures;
+	private String imageLocation;
+	
+	@Lob byte[] profilePictures;
 	
 	public Member() {
 	}
@@ -128,11 +128,11 @@ public class Member {
 	public void setCircles(List<Circle> circles) {
 		this.circles = circles;
 	}
-	public List<EventParticipant> getEventsParticipating() {
-		return eventsParticipating;
+	public String getImageLocation() {
+		return imageLocation;
 	}
-	public void setEventsParticipating(List<EventParticipant> eventsParticipating) {
-		this.eventsParticipating = eventsParticipating;
+	public void setImageLocation(String imageLocation) {
+		this.imageLocation = imageLocation;
 	}
 	
 }

@@ -5,6 +5,8 @@ package cs544.project.share2care.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,10 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
 import cs544.project.share2care.domain.UserRole;
+import cs544.project.share2care.service.IMemberService;
+import cs544.project.share2care.service.IUserService;
 import cs544.project.share2care.service.impl.UserServiceImpl;
 
 /**
@@ -28,8 +34,11 @@ import cs544.project.share2care.service.impl.UserServiceImpl;
 public class UserController {
 	Logger logger = Logger.getLogger(UserController.class);
 	@Autowired
-	UserServiceImpl userService;
+	IUserService userService;
 
+	@Autowired
+	IMemberService memberService;	
+	
 	@RequestMapping("/handleLogin")
 	public String handleLogin() {
 		String view = "";
@@ -61,7 +70,12 @@ public class UserController {
 		}
 		user.setRole(UserRole.ROLE_USER);
 		userService.saveNewUser(user);
-		model.addAttribute("msg", user.getUsername());
+		
+		Member member = new Member();
+		member.setFirstName(user.getUsername());
+		member.setEmail(user.getEmail());
+		memberService.saveMember(member);
+		
 		return "/users/user/thankyou";
 	}
 	

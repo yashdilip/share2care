@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="utf-8" />
-<title>Share2Care | Profile</title>
+<title>Share2Care | Circle</title>
 <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
@@ -14,85 +14,37 @@
 			<div class="col-sm-8">
 				<div class="container">
 
-					<h2 class="text-center">Member Profile</h2>
+					<h2 class="text-center">Circle Details Edit</h2>
 					<div>
-						<form class="form-horizontal" th:object="${member}"
-							th:action="@{/user/profile}" method="post"
-							enctype="multipart/form-data">
-							<!-- <input type="hidden" th:field="${memeberId}" /> -->
+						<form class="form-horizontal" th:object="${circle}"
+							th:action="@{'/circle/edit/'+'circle.circleId'}" method="post">
+							<input type="hidden" th:field="${circle.circleId}" />
 							<div class="form-group">
-								<label class="col-sm-2 control-label">First Name :</label>
+								<label class="col-sm-2 control-label">Circle Id :</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.firstName}" />
+									<p class="form-control-static" th:text="${circle.circleId}">Circle
+										Id</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Owner Name:</label>
+								<div class="col-sm-6">
+									<p class="form-control-static"
+										th:text="${circle.owner.firstName}">Owner Firstname</p>
+									<p class="form-control-static"
+										th:text="${circle.owner.lastName}">Owner lastname</p>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Last Name :</label>
+								<label class="col-sm-2 control-label">Circle Name :</label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control"
-										th:field="${member.lastName}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Email:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.email}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Phone Number:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.phoneNumber}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Street:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.address.street}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">City:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.address.city}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Zip Code:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.address.zip}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">State:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.address.state}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Country:</label>
-								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${member.address.country}" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Upload Image:</label>
-								<div class="col-sm-6">
-									<input type="file" class="form-control"
-										name="${member.profilePictures}" />
+										th:field="${circle.circleName}" />
 								</div>
 							</div>
 							<div class="row">
 								<button type="submit" class="btn btn-default">Submit</button>
-								<a href="/user/dashboard" class="btn btn-primary">Cancel</a>
 							</div>
 						</form>
 					</div>
@@ -132,7 +84,9 @@
 							role="tabpanel" aria-labelledby="headingTwo">
 							<div class="panel-body">
 								<a href="#" th:href="@{/circle/create}" class="list-group-item">Create
-									New Circle</a> <a href="#" th:href="@{/circle/view}" class="list-group-item">Update/View
+									New Circle</a> <a href="#" th:href="@{/circle/view}"
+									class="list-group-item">View Circle</a> <a href="#"
+									th:href="@{/circle/update}" class="list-group-item">Update
 									Circle</a> <a href="#" class="list-group-item">Join Circle</a>
 							</div>
 						</div>
