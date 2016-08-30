@@ -19,8 +19,8 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="visibility">Event
-						visibility:</label> <select class="form-control col-sm-2" id="visibility"
+					<label class="control-label col-sm-3" for="visibility">Event
+						visibility:</label> <select class="col-sm-2" id="visibility"
 						th:field="*{visibility}">
 						<option th:each="visibility : ${visibilities}"
 							th:value="${visibility}" th:text="${visibility.eventVisibility}"></option>
@@ -28,8 +28,8 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="category">Event
-						category:</label> <select class="form-control col-sm-2" id="category"
+					<label class="control-label col-sm-3" for="category">Event
+						category:</label> <select class="col-sm-2" id="category"
 						th:field="*{category}">
 						<option th:each="category : ${categories}" th:value="${category}"
 							th:text="${category.eventCategory}"></option>
