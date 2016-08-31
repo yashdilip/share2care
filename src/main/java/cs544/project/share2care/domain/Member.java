@@ -3,6 +3,7 @@
  */
 package cs544.project.share2care.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,10 +44,8 @@ public class Member {
 	@OneToMany(mappedBy="member")
 	private List<Resource> resources;
 	
-	@ManyToMany
-	@JoinTable(name="member_circle", joinColumns = @JoinColumn(name="memberId"),
-	inverseJoinColumns = @JoinColumn(name="circleId"))
-	private List<Circle> circles;
+	@OneToMany(mappedBy="member")
+	private List<MemberCircle> circles = new ArrayList<MemberCircle>();
 	
 	private String imageLocation;
 	
@@ -125,17 +124,24 @@ public class Member {
 		resource.setMember(null);
 		this.resources.remove(resource);
 	}
-	public List<Circle> getCircles() {
-		return circles;
-	}
-	public void setCircles(List<Circle> circles) {
-		this.circles = circles;
-	}
+
 	public String getImageLocation() {
 		return imageLocation;
 	}
 	public void setImageLocation(String imageLocation) {
 		this.imageLocation = imageLocation;
+	}
+	public List<EventParticipant> getEventParticipating() {
+		return eventParticipating;
+	}
+	public void setEventParticipating(List<EventParticipant> eventParticipating) {
+		this.eventParticipating = eventParticipating;
+	}
+	public List<MemberCircle> getCircles() {
+		return circles;
+	}
+	public void setCircles(List<MemberCircle> circles) {
+		this.circles = circles;
 	}
 	
 }

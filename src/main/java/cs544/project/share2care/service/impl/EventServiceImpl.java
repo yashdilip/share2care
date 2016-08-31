@@ -52,6 +52,12 @@ public class EventServiceImpl implements IEventService {
 	public List<Event> findUpcomingEvents(Member participant) {
 		return eventRepository.findByParticipantsParticipantAndStartDateTimeAfter(participant, new Date());
 	}
+	
+	@Override
+	public List<Event> findOwnEvents(int memberId) {
+		return eventRepository.findByOwnerMemberId(memberId);
+	}
+
 
 	@Override
 	public List<Event> findPastEvents(Member participant) {

@@ -20,8 +20,9 @@ public interface IEventService {
 	//Delete all events of a specific member
 	Long deleteByOwnerMemberId(int memberId);
 	//Upcoming events which member is going to attend
-	List<Event> findUpcomingEvents(Member owner);
-	List<Event> findPastEvents(Member owner);
+	List<Event> findUpcomingEvents(Member member);
+	List<Event> findOwnEvents(int memberId);
+	List<Event> findPastEvents(Member member);
 	//Upcoming events in a given city
 	List<Event> findEventsByCity(String city);
 	//Upcoming events on a given date

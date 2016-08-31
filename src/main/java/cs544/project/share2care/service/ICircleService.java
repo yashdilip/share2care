@@ -16,9 +16,11 @@ import cs544.project.share2care.domain.Member;
  */
 @Service
 public interface ICircleService {
-	void addMember(Member member);
 	List<Circle> findAllCircles(Integer memberId);
 	Circle findOneCircleByCircleId(Integer circleId);
-	void saveNewCircle(Circle circle);
-	
+	void saveNewCircle(Circle circle, Member member);
+	String joinCircle(Integer circleId, Integer memberId);
+	List<Circle> findAllCirclesOfApp();
+	List<Circle> findAllCirclesOfAppNotOwnedMyMember(Integer memberId);
+	void saveUpdateCircle(Circle circle, Member member);
 }

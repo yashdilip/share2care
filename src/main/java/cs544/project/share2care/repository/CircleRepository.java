@@ -22,4 +22,13 @@ public interface CircleRepository extends JpaRepository<Circle, Integer>{
 	public Circle findOneCircleByCircleId(@Param("circleId") Integer circleId);	
 	
 	public List<Circle> findByOwnerMemberId(Integer memberId);
+	
+	@Query("from Circle c where c.owner.memberId <> :memberId")
+	public List<Circle> findAllCirclesNotOwnedByMemberId(@Param("memberId") Integer memberId);
+	
+	public List<Circle> findByOwnerMemberIdIsNot(Integer memberId);
+	
+	public List<Circle> findByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(Integer memberId, Integer memberID);
+	
+	public List<Circle> findByMembersMemberMemberIdAndOwnerMemberId(Integer memberId, Integer memberID);
 }

@@ -10,10 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,14 +56,25 @@ public class EventController {
 		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		List<Event> events = eventService.findUpcomingEvents(member);
 		model.addAttribute("events", events);
-		return "users/user/events";				
+		model.addAttribute("view", "users/user/events");
+		return "fragments/memberMasterPage";				
+	}
+	
+	@RequestMapping(value="/myEvents", method=RequestMethod.GET)
+	public String getMyEvents(Model model, Principal principal){
+		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
+		List<Event> events = eventService.findOwnEvents(member.getMemberId());
+		model.addAttribute("events", events);
+		model.addAttribute("view", "users/user/ownEvents");
+		return "fragments/memberMasterPage";			
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public String getEventDetail(Model model, @PathVariable int id){
 		Event event = eventService.findById(id);
 		model.addAttribute("event", event);		
-		return "users/user/event";				
+		model.addAttribute("view", "users/user/event");
+		return "fragments/memberMasterPage";				
 	}
 	
 	@RequestMapping(value="/pastEvents", method=RequestMethod.GET)
@@ -68,7 +82,8 @@ public class EventController {
 		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		List<Event> events= eventService.findPastEvents(owner);
 		model.addAttribute("events", events);		
-		return "users/user/events";				
+		model.addAttribute("view", "users/user/events");
+		return "fragments/memberMasterPage";				
 	}
 	
 
@@ -89,20 +104,19 @@ public class EventController {
 	public String processEventCreate(@Valid @ModelAttribute("event") Event event, BindingResult result, Model model) {
 		String view;
 		if (!result.hasErrors()) {
+			//memberService.saveMember(event.getOwner());
 			eventService.save(event);
-			Venue venue = new Venue();
-			model.addAttribute("venue", venue);
 			view = "redirect:/event/"+event.getId();
 		} else {
 			view = "users/user/createNewEvent";
 		}
 		return view;
 	}
-	@RequestMapping(value = "/create/addVenue", method=RequestMethod.POST)
-	public String processAddEventVenue(@Valid @ModelAttribute("venue") Venue venue, BindingResult result, HttpServletRequest request){
+	@RequestMapping(value = "/create/addVenue/{id}", method=RequestMethod.POST)
+	public String processAddEventVenue(@Valid @ModelAttribute("venue") Venue venue, BindingResult result, @PathVariable int id){
 		Event event;
 		if (!result.hasErrors()) {
-			event = (Event)request.getSession(false).getAttribute("event");
+			event = eventService.findById(id);
 			event.setVenue(venue);
 			eventService.save(event);
 			return "users/user/uploadEventImage";
@@ -111,12 +125,13 @@ public class EventController {
 		}
 		
 	}
-	@RequestMapping(value = "/create/uploadImage", method=RequestMethod.POST)
-	public String processImageUpload(@RequestParam("eventPhoto") MultipartFile eventPhoto, HttpServletRequest request) throws IOException{
-		Event event = (Event)request.getSession(false).getAttribute("event");
-		event.setEventPicture(eventPhoto.getBytes());
+	@RequestMapping(value = "/create/uploadEventPicture", method=RequestMethod.PUT)
+	@ResponseStatus(value=HttpStatus.OK)
+	public void processImageUpload(@RequestParam("eventPicture") MultipartFile eventPicture, HttpSession session) throws IOException{
+		Event event = (Event)session.getAttribute("event");
+		event.setEventPicture(eventPicture.getBytes());		
 		eventService.save(event);
-		return "redirect:/event/" + event.getId();
+		return;
 	}
 	
 	@InitBinder

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import cs544.project.share2care.domain.Circle;
 import cs544.project.share2care.domain.Member;
 
 /**
@@ -19,6 +20,7 @@ public interface IMemberService {
 	void saveMember(Member member);
 	List<Member> findAllMembers();
 	List<Member> findAllMembersNotMe(Integer memberId);
-	List<Member> findAllMembersOfCircleByCircleId(Integer circleId);
+	List<Member> findMembersOfCircleByCircleId(Integer circleId);
 	Member getMemberByMemberId(Integer memberId);
+	String addMemberIntoCircle(Member member, Circle circle);
 }

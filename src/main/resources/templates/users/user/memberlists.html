@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Share2Care | All Members</title>
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+	<div class="container">
+		<!--/*/ <th:block th:include="fragments/header_loggedin :: header"></th:block> /*/-->
+
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="">
+
+					<h2 class="center">All Members <span th:text="${msg}"></span></h2>
+					<div>
+					<form class="form-horizontal">
+<!-- 					<input type="hidden" th:field="${memeberId}" />
+ -->							<div th:if="${not #lists.isEmpty(members)}">
+								<table class="table table-striped table-responsive">
+									<tr>
+										<th>Profile</th>
+										<th>Member Name</th>
+										<th>Email</th>
+										<th></th>
+										<th></th>
+									</tr>
+									<tr th:each="member : ${members}">
+									<img  th:src="@{member.imageLocation}" />
+										<td th:text="${member.memberId}"><a href="/user/discover/${member.memberId}" hidden="hidden">Circle Id</a></td>
+										<td th:text="${member.firstName} + ' ' + ${member.lastName}">Member Name</td>
+										<td th:text="${member.email}">Email</td>
+										<td><a th:href="${'/user/discover/' + member.memberId}" class="btn btn-primary">View Profile</a></td>
+										<td><a th:href="${'/user/discover/addfriendtocircle/' + member.memberId}" class="btn btn-warning">Add Friend</a></td>
+									 </tr>
+								</table>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		<div class="col-sm-4">
+				<!--/*/ <th:block th:include="fragments/rightsidebar :: rightsidebar"></th:block> /*/-->
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+</body>
+</html>

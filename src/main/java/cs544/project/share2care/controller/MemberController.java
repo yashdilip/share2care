@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import cs544.project.share2care.domain.Circle;
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
 import cs544.project.share2care.service.ICircleService;
@@ -72,13 +73,6 @@ public class MemberController {
 		model.addAttribute("members", members);
 		return "friendlist";
 	}
-
-	/*
-	 * @RequestMapping(value="/friend/add/{memberId}", method =
-	 * RequestMethod.POST) public String addFriend(Member member, Principal
-	 * principal){ circleService.addMember(member); return
-	 * "redirect:/user/friend/search"; }
-	 */
 
 	@RequestMapping(value = "/verify/{userId}", method = RequestMethod.GET)
 	public String confirmEmailAddress(@PathVariable("userId") Long userId, Model model) {
@@ -138,15 +132,6 @@ public class MemberController {
 		return "/users/user/fileupload";
 	}
 
-	/*@RequestMapping(value = "/imageupload", method = RequestMethod.POST)
-	public String uploadImageProcess(@RequestParam("myFile") MultipartFile myFile, Principal principal)
-			throws IOException {
-		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
-		member.setProfilePictures(myFile.getBytes());
-		memberService.saveMember(member);
-		return "redirect:/user/dashboard";
-	}*/
-
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	
 	public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, HttpSession session) {
@@ -174,6 +159,38 @@ public class MemberController {
 		//return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@RequestMapping(value="/discover", method = RequestMethod.GET)
+	public String viewAllMembersofApp(Model model, HttpSession session){
+		Integer memberId = ((Member)session.getAttribute("member")).getMemberId();
+		List<Member> members = memberService.findAllMembersNotMe(memberId);
+		model.addAttribute("members", members);
+		return "/users/user/memberlists";
+	}
+	
+	@RequestMapping(value="/discover/{memberId}", method = RequestMethod.GET)
+	public String viewMembersDetail(@PathVariable("memberId") Integer memberId, Model model, HttpSession session){
+		Member member = memberService.getMemberByMemberId(memberId);
+		model.addAttribute("member", member);
+		return "/users/user/memberprofile2add";
+	}
+	
+	@RequestMapping(value="/discover/addfriendtocircle/{memberId}", method = RequestMethod.GET)
+	public String addToCircle(@PathVariable("memberId") int memberId, Model model, HttpSession session){
+		System.out.println("be friend is here");
+		String msg ="";
+		Member m = (Member) session.getAttribute("member");
+		Circle circle = circleService.findAllCircles(m.getMemberId()).get(0);
+		Member mem = memberService.getMemberByMemberId(memberId);
+		if(circle!=null){
+			msg = memberService.addMemberIntoCircle(mem,circle);
+		}
+		if(msg.contains("not saved")){
+			
+		}
+		return "redirect:/user/discover";
+
+	}
+	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

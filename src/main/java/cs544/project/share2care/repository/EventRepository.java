@@ -19,9 +19,10 @@ public interface EventRepository extends JpaRepository<Event, Integer>{
 	Event findById(int id);
 	List<Event> findAll();
 	Page<Event> findAll(Pageable pageble);
-	List<Event> findByOwnerMemberIdOrderByStartDateTimeAsc(int memberId);	
+	List<Event> findByOwnerMemberIdOrderByStartDateTimeAsc(int memberId);
+	List<Event> findByOwnerMemberId(Integer memberId);
 	List<Event> findByStartDateTimeBetween(Date date1, Date date2);
-	List<Event> findByStatus(EventStatus status);
+	List<Event> findByStatus(EventStatus status);	
 	List<Event> findByVenueAddressCityIgnoreCaseAndStartDateTimeBefore(String city, Date date);
 	List<Event> findByVenueAddressCityIgnoreCaseAndStartDateTimeBetween(String city, Date date1, Date date2);
 	List<Event> findByVenueAddressCityIgnoreCaseAndStatus(String city, EventStatus status);	
