@@ -22,6 +22,11 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 	@Query("from Member m where m.memberId <> :memberId")
 	List<Member> getAllMembersExceptMe(Integer memberId);
 	
-	@Query("select c.members from Circle c where c.circleId=:circleId")
-	List<Member> getAllMembersOfCircleByCircleId(@Param("circleId") Integer circleId);
+/*	@Query("select distinct c.member from MemberCircle c where c.circleId=:circleId")
+	List<Member> getAllMembersOfCircleByCircleId(@Param("circleId") Integer circleId);*/
+	
+	//List<Member> findByCirclesCircleId(Integer circleId);
+	
+	List<Member> findByCirclesCircleCircleId(Integer circleId);
+	
 }

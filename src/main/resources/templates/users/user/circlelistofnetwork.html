@@ -14,13 +14,13 @@
 
 					<h2 class="center">All Circles <span th:text="${msg}"></span></h2>
 					<div>
+					<form class="form-horizontal">
 							<div th:if="${not #lists.isEmpty(circles)}">
-								<table class="table table-striped">
+								<table class="table table-striped table-responsive">
 									<tr>
 										<th>Circle Id</th>
 										<th>Circle Name</th>
 										<th>Circle Owner Name</th>
-										<th></th>
 										<th></th>
 										<th></th>
 										<th></th>
@@ -30,16 +30,16 @@
 										<td th:text="${circle.circleName}">Circle Name</td>
 										<td th:text="${circle.owner.firstName} + ${circle.owner.lastName}">Circle Owner's Name</td>
 										<td><a th:href="${'/circle/view/' + circle.circleId}" class="btn btn-primary">View Circle</a></td>
-										<td><a th:href="${'/circle/edit/' + circle.circleId}" class="btn btn-warning">Edit Circle</a></td>
+										<td><a th:href="${'/circle/join/' + circle.circleId}" class="btn btn-warning">Join Circle</a></td>
 										<td><a th:href="${'/circle/member/show' + circle.circleId}"	class="btn btn-warning">Show Circle Members</a></td>
 									 </tr>
 								</table>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		<div class="col-sm-4">
-
 				<!--/*/ <th:block th:include="fragments/rightsidebar :: rightsidebar"></th:block> /*/-->
 			</div>
 		</div>

@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="utf-8" />
-<title>Share2Care | Circle</title>
+<title>Share2Care | Circle | Join</title>
 <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
@@ -14,10 +14,9 @@
 			<div class="col-sm-8">
 				<div class="">
 
-					<h2 class="text-center">Circle Details Edit</h2>
+					<h2 class="text-center">Circle Details</h2>
 					<div>
-						<form class="form-horizontal" th:object="${circle}"
-							th:action="@{'/circle/edit/'+'circle.circleId'}" method="post">
+					<form class="form-horizontal" th:object="${circle}"  th:action="@{'/circle/join/'+${circle.circleId}}" method="post">
 							<input type="hidden" th:field="${circle.circleId}" />
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Circle Id :</label>

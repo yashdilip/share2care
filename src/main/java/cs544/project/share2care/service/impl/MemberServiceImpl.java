@@ -3,11 +3,13 @@
  */
 package cs544.project.share2care.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cs544.project.share2care.domain.Circle;
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
 import cs544.project.share2care.repository.MemberRepository;
@@ -57,13 +59,22 @@ public class MemberServiceImpl implements IMemberService{
 	}
 
 	@Override
-	public List<Member> findAllMembersOfCircleByCircleId(Integer circleId) {
-		return memberRepository.getAllMembersOfCircleByCircleId(circleId);
+	public List<Member> findMembersOfCircleByCircleId(Integer circleId) {
+		//return memberRepository.findByCirclesCircleId(circleId);
+		return memberRepository.findByCirclesCircleCircleId(circleId);
 	}
 
 	@Override
 	public Member getMemberByMemberId(Integer memberId) {
 		return memberRepository.findOne(memberId);
+	}
+
+	@Override
+	public void addMemberIntoCircle(Member member, Circle circle) {
+		
+/*		member.getCircles().add(circle);
+		circle.getMembers().add(member);
+		this.saveMember(member);		*/
 	}
 
 }

@@ -73,13 +73,6 @@ public class MemberController {
 		return "friendlist";
 	}
 
-	/*
-	 * @RequestMapping(value="/friend/add/{memberId}", method =
-	 * RequestMethod.POST) public String addFriend(Member member, Principal
-	 * principal){ circleService.addMember(member); return
-	 * "redirect:/user/friend/search"; }
-	 */
-
 	@RequestMapping(value = "/verify/{userId}", method = RequestMethod.GET)
 	public String confirmEmailAddress(@PathVariable("userId") Long userId, Model model) {
 		System.out.println("i am here");
@@ -138,15 +131,6 @@ public class MemberController {
 		return "/users/user/fileupload";
 	}
 
-	/*@RequestMapping(value = "/imageupload", method = RequestMethod.POST)
-	public String uploadImageProcess(@RequestParam("myFile") MultipartFile myFile, Principal principal)
-			throws IOException {
-		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
-		member.setProfilePictures(myFile.getBytes());
-		memberService.saveMember(member);
-		return "redirect:/user/dashboard";
-	}*/
-
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	
 	public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, HttpSession session) {
@@ -174,6 +158,15 @@ public class MemberController {
 		//return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@RequestMapping(value="/discover", method = RequestMethod.GET)
+	public String viewAllMembersofApp(Model model, HttpSession session){
+		
+		return "";
+	}
+	
+	
+	
+	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

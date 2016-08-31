@@ -15,7 +15,7 @@
 				<!-- Upload file form -->
 				<form id="upload-file-form" th:action="@{/user/uploadFile}"
 					method="post" enctype="multipart/form-data">
-					<label for="upload-file-input">Upload your file:</label> <input
+					<h2 class="text-center"><label for="upload-file-input">Upload Image</label></h2> <input
 						id="upload-file-input" type="file" name="uploadfile" accept="*" />
 					<br /> <span id="upload-file-message"></span>
 					<button type="submit" class="btn btn-primary">Submit</button>
@@ -23,100 +23,11 @@
 			</div>
 			<div class="col-sm-4">
 
-				<div class="panel-group" id="accordion" role="tablist"
-					aria-multiselectable="true">
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingOne">
-							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" data-parent="#accordion"
-									href="#collapseOne" aria-expanded="true"
-									aria-controls="collapseOne"> Member Service </a>
-							</h4>
-						</div>
-						<div id="collapseOne" class="panel-collapse collapse in"
-							role="tabpanel" aria-labelledby="headingOne">
-							<div class="panel-body">
-								<a href="#" th:href="@{/user/profile}" class="list-group-item">View/Edit
-									Profile</a> <a href="#" th:href="@{/user/uploadFile}" class="list-group-item">Upload Image</a>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingTwo">
-							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse"
-									data-parent="#accordion" href="#collapseTwo"
-									aria-expanded="false" aria-controls="collapseTwo"> Circle
-									Management </a>
-							</h4>
-						</div>
-						<div id="collapseTwo" class="panel-collapse collapse"
-							role="tabpanel" aria-labelledby="headingTwo">
-							<div class="panel-body">
-								<a href="#" th:href="@{/circle/create}" class="list-group-item">Create
-									New Circle</a> <a href="#" th:href="@{/circle/view}"
-									class="list-group-item">View Circle</a>
-									<a href="#" class="list-group-item">Join Circle</a>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingThree">
-							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse"
-									data-parent="#accordion" href="#collapseThree"
-									aria-expanded="false" aria-controls="collapseThree"> Make
-									Friends </a>
-							</h4>
-						</div>
-						<div id="collapseThree" class="panel-collapse collapse"
-							role="tabpanel" aria-labelledby="headingThree">
-							<div class="panel-body">
-								<a href="#" th:href="@{/user/profile}" class="list-group-item">Discover
-									Friends</a>
-							</div>
-						</div>
-					</div>
-				</div>
+				<!--/*/ <th:block th:include="fragments/rightsidebar :: rightsidebar"></th:block> /*/-->
 			</div>
 		</div>
 
 	</div>
-
-	<script>
-		// bind the on-change event for the input element (triggered when a file
-		// is chosen)
-		$(document).ready(function() {
-			$("#upload-file-input").on("change", uploadFile);
-		});
-
-		/**
-		 * Upload the file sending it via Ajax at the Spring Boot server.
-		 */
-		function uploadFile() {
-			$
-					.ajax({
-						url : "/uploadFile",
-						type : "POST",
-						data : new FormData($("#upload-file-form")[0]),
-						enctype : 'multipart/form-data',
-						processData : false,
-						contentType : false,
-						cache : false,
-						success : function() {
-							// Handle upload success
-							$("#upload-file-message").text(
-									"File succesfully uploaded");
-						},
-						error : function() {
-							// Handle upload error
-							$("#upload-file-message")
-									.text(
-											"File not uploaded (perhaps it's too much big)");
-						}
-					});
-		} // function uploadFile
-	</script>
 
 </body>
 

@@ -3,6 +3,7 @@
  */
 package cs544.project.share2care.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -41,7 +42,7 @@ public class CircleController {
 	public String createNewCircleProcess(Circle circle, Model model, HttpSession session){
 		Integer memberId = Integer.valueOf(((Member)session.getAttribute("member")).getMemberId());
 		Member member = memberService.getMemberByMemberId(memberId);
-		circle.setOwner(member);
+		
 		List<Circle> circles = circleService.findAllCircles(memberId);
 		for(Circle c: circles){
 			if(circle.getCircleName().equals(c.getCircleName())){
@@ -49,7 +50,8 @@ public class CircleController {
 				return "redirect:/circle/create";
 			}
 		}		
-		circleService.saveNewCircle(circle);
+		circleService.saveNewCircle(circle, member);
+		//memberService.addMemberIntoCircle(member, circle);
 		return "redirect:/user/dashboard";
 	}
 	
@@ -58,6 +60,7 @@ public class CircleController {
 		Integer memberId = Integer.valueOf(((Member)session.getAttribute("member")).getMemberId());
 		List<Circle> circlelist = circleService.findAllCircles(memberId);
 		model.addAttribute("circles", circlelist);
+		model.addAttribute("msg", "You Have!");
 		return "/users/user/circlelist";
 	}
 	
@@ -76,15 +79,41 @@ public class CircleController {
 	}
 	@RequestMapping(value="/edit/{circleId}", method=RequestMethod.POST)
 	public String editCircleProcess(@PathVariable("circleId") String circleId, Circle circle, Model model, HttpSession session){
-		//Circle cir = circleService.findOneCircleByCircleId(Integer.valueOf(circleId));
-		//cir.setCircleName(circle.getCircleName());
-		circleService.saveNewCircle(circle);
+		Member member = (Member)session.getAttribute("member");
+		circle.setOwner(member);
+		circleService.saveUpdateCircle(circle, member);
+		return "redirect:/user/dashboard";
+	}
+	
+	@RequestMapping(value="/discover", method=RequestMethod.GET)
+	public String viewAllCircle(Model model, HttpSession session){
+		Integer memberId = ((Member)session.getAttribute("member")).getMemberId();
+		List<Circle> circlelist = circleService.findAllCirclesOfAppNotOwnedMyMember(memberId);
+		model.addAttribute("circles", circlelist);
+		model.addAttribute("msg", "of the Network");
+		return "/users/user/circlelistofnetwork";
+	}
+	
+	@RequestMapping(value="/join/{circleId}", method=RequestMethod.GET)
+	public String getCircleDetails(@PathVariable("circleId") Integer circleId, Model model){
+		model.addAttribute("circle", circleService.findOneCircleByCircleId(circleId));
+		return "/users/user/circledetails2join";
+	}
+	
+	@RequestMapping(value="/join/{circleId}", method=RequestMethod.POST)
+	public String joinCircle(@PathVariable("circleId") String circleId, Circle circle, Model model, HttpSession session){
+		Integer memberId = Integer.valueOf(((Member) session.getAttribute("member")).getMemberId());
+		String msg = circleService.joinCircle(Integer.valueOf(circleId), memberId);
+		model.addAttribute("msg", msg);
+		if(msg.contains("duplicate")){
+			return "redirect:/circle/join/"+circle.getCircleId();
+		}
 		return "redirect:/user/dashboard";
 	}
 	
 	@RequestMapping(value="/member/show/{circleId}", method=RequestMethod.GET)
 	public String viewMembersOfCircles(@PathVariable("circleId") Integer circleId){
-		List<Member> memberLists = memberService.findAllMembersOfCircleByCircleId(circleId);
+		List<Member> memberLists = memberService.findMembersOfCircleByCircleId(circleId);
 		return "";
 		
 	}
