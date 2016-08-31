@@ -38,12 +38,11 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Circle Name :</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"
-										th:field="${circle.circleName}" />
-								</div>
+									<p class="form-control-static" th:text="${circle.circleName}">Circle Name</p>
+								</div>								
 							</div>
 							<div class="row">
-								<button type="submit" class="btn btn-default">Submit</button>
+								<button type="submit" class="btn btn-primary">Join Group</button>
 							</div>
 						</form>
 					</div>

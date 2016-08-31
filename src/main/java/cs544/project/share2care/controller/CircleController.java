@@ -110,11 +110,4 @@ public class CircleController {
 		}
 		return "redirect:/user/dashboard";
 	}
-	
-	@RequestMapping(value="/member/show/{circleId}", method=RequestMethod.GET)
-	public String viewMembersOfCircles(@PathVariable("circleId") Integer circleId){
-		List<Member> memberLists = memberService.findMembersOfCircleByCircleId(circleId);
-		return "";
-		
-	}
 }

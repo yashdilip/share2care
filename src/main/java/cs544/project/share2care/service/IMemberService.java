@@ -22,5 +22,5 @@ public interface IMemberService {
 	List<Member> findAllMembersNotMe(Integer memberId);
 	List<Member> findMembersOfCircleByCircleId(Integer circleId);
 	Member getMemberByMemberId(Integer memberId);
-	void addMemberIntoCircle(Member member, Circle circle);
+	String addMemberIntoCircle(Member member, Circle circle);
 }
