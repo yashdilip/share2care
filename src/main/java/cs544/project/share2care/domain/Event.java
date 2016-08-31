@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * @author Solomon Kassahun
  *
@@ -39,9 +41,11 @@ public class Event {
 	private String description;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	//@DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss")
 	private Date startDateTime;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	//@DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss")
 	private Date endDateTime;
 	
 	@Enumerated(EnumType.STRING)
