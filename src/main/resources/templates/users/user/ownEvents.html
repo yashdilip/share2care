@@ -19,7 +19,7 @@
 					<tr>
 						<td colspan="3" rowspan="3"><img
 							th:unless="${#lists.isEmpty(event.eventPicture)}"
-							th:src="@{'data:image/jpeg;base64,'+${event.eventPicture}}"
+							th:src="*{'/event/image/'+event.id}"
 							alt="EventImage" /></td>
 						<td><a th:href="@{/user/profile/${event.owner.memberId}}"><span
 								th:text="${'By: ' + event.owner.firstName + ' ' + event.owner.lastName}"></span></a></td>
