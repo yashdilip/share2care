@@ -22,8 +22,8 @@ public class Venue {
 	
 	private String name;
 	
-	@Embedded
-	private GeoLocation geoLocation;
+//	@Embedded
+//	private GeoLocation geoLocation;
 	
 	@Embedded
 	private Address address;
@@ -52,13 +52,13 @@ public class Venue {
 		this.name = name;
 	}
 
-	public GeoLocation getGeoLocation() {
-		return geoLocation;
-	}
-
-	public void setGeoLocation(GeoLocation geoLocation) {
-		this.geoLocation = geoLocation;
-	}
+//	public GeoLocation getGeoLocation() {
+//		return geoLocation;
+//	}
+//
+//	public void setGeoLocation(GeoLocation geoLocation) {
+//		this.geoLocation = geoLocation;
+//	}
 
 	public Address getAddress() {
 		return address;

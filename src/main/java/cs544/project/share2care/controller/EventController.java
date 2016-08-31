@@ -88,7 +88,7 @@ public class EventController {
 		return "fragments/memberMasterPage";				
 	}
 	
-	@RequestMapping(value="/pastEvents", method=RequestMethod.GET)
+	@RequestMapping(value="/past", method=RequestMethod.GET)
 	public String getPastEvents(Model model, Principal principal){
 		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		List<Event> events= eventService.findPastEvents(owner);
@@ -102,7 +102,9 @@ public class EventController {
 	public String getCreateNewEventForm(Model model, Principal principal) {
 		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		Event event = new Event();
+		Venue venue = new Venue();
 		event.setOwner(owner);
+		event.setVenue(venue);
 		owner.getEvents().add(event);
 		model.addAttribute("event", event);
 		model.addAttribute("visibilities", EventVisibility.values());

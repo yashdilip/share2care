@@ -89,6 +89,47 @@
 					<br /> <span id="upload-pic-message"></span>
 
 				</div>
+				<ul>Address information for event venue</ul>
+				<div
+					th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
+					<label class="control-label col-sm-2" for="venueName">Venue name:</label>
+
+					<div class="col-sm-4">
+						<input type="text" th:field="${event.venue.name}" class="form-control"
+							placeholder="venue name" id="venueName" />
+					</div>
+
+				</div>
+				<div
+					th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
+					<label class="control-label col-sm-2" for="street">Street:</label>
+
+					<div class="col-sm-4">
+						<input type="text" th:field="${event.venue.address.street}" class="form-control"
+							placeholder="street" id="street" />
+					</div>
+
+				</div>
+				<div
+					th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
+					<label class="control-label col-sm-2" for="city">City:</label>
+
+					<div class="col-sm-4">
+						<input type="text" th:field="${event.venue.address.city}" class="form-control"
+							placeholder="city" id="city" />
+					</div>
+
+				</div>
+				<div
+					th:class="${#fields.hasErrors('name')}? 'control-group error' : 'form-group' ">
+					<label class="control-label col-sm-2" for="street">State:</label>
+
+					<div class="col-sm-4">
+						<input type="text" th:field="${event.venue.address.state}" class="form-control"
+							placeholder="state (2 or 3 characters)" id="state" />
+					</div>
+
+				</div>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
