@@ -72,6 +72,7 @@ public class ResourceController {
 		}
 		List<Resource> resourceList = resourceService.findAllByEventId(eventId);
 		model.addAttribute("resources", resourceList);
+		model.addAttribute("event", event);
 		return "/resource/resourcelist";
 	}
 
