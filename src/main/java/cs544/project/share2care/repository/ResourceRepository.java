@@ -19,6 +19,8 @@ public interface ResourceRepository extends JpaRepository<Resource, Integer> {
 
 	@Query("from Resource r where r.importance=:importance")
 	List<Resource> findAllByImportance(@Param("importance") String importance);
+	
+	List<Resource> findAllByEventId(int eventId);
 
 	@Query("from Resource r where r.description like CONCAT('%',:description,'%') ")
 	List<Resource> findAllByDescriptionLike(@Param("description") String description);

@@ -27,6 +27,8 @@ public interface IResourceService {
 	public List<Resource> findAllByDescriptionLike(String description);
 
 	public List<Resource> findByNameLike(String name);
+	
+	public List<Resource> findAllByEventId(int eventId);
 }
 
 

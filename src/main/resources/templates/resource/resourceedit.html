@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="utf-8" />
-<title>Share2Care | Add Resource</title>
+<title>Share2Care | Edit Resource</title>
 <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
@@ -14,10 +14,10 @@
 			<div class="col-sm-8">
 				<div class="container">
 
-					<h2 class="text-center">Add Resource</h2>
+					<h2 class="text-center">Edit Resource</h2>
 					<div>
 						<form class="form-horizontal" th:object="${resource}"
-							th:action="@{/resource/addresource}" method="post"
+							th:action="@{/resource/editResource}" method="post"
 							enctype="multipart/form-data">
 							 <input type="hidden" th:value="${eventId}"  name="eventId"/>
 							<div class="form-group">

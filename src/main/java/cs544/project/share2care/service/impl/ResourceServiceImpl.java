@@ -69,4 +69,10 @@ public class ResourceServiceImpl implements IResourceService {
 		resourceRepository.delete(Integer.valueOf(resourceId));
 	}
 
+	@Override
+	public List<Resource> findAllByEventId(int eventId) {
+		// TODO Auto-generated method stub
+		return resourceRepository.findAllByEventId(eventId);
+	}
+
 }

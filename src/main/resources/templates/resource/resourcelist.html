@@ -12,7 +12,9 @@
 			<div class="col-sm-8">
 				<div class="container">
 
-					<h2 class="center">All Resources You Have!</h2>
+					<h2 class="center">
+						All Resources of <span th:text="${event.name}"></span> You Have!
+					</h2>
 					<div>
 						<div th:if="${not #lists.isEmpty(resources)}">
 							<table class="table table-striped">
@@ -23,6 +25,7 @@
 									<th>Resource Quantity</th>
 									<th>Resource Status</th>
 									<th>Resource Importance</th>
+									<th>Resource Member</th>
 
 								</tr>
 								<tr th:each="resource : ${resources}">
@@ -32,20 +35,31 @@
 									<td th:text="${resource.quantity}"></td>
 									<td th:text="${resource.status}"></td>
 									<td th:text="${resource.importance}"></td>
+                                    <td th:text="${resource.member} ? ${resource.member.firstName} : ''"></td>
+									<div th:switch="${organizer}">
+										<p th:case="true">
+										<td><a th:href="${'/resource/editResource/' + resource.id}"
+											class="btn btn-warning">Edit</a></td>
+										<td><a th:href="${'/resource/delete/' + resource.id}"
+											class="btn btn-danger">Delete</a></td>
+										</p>
 
-									<td><a th:href="${'/resource/' + resource.id}"
-										class="btn btn-primary">View</a></td>
-									<td><a th:href="${'/resource/edit/' + resource.id}"
-										class="btn btn-warning">Edit</a></td>
-									<td><a th:href="${'/resource/delete/' + resource.id}"
-										class="btn btn-danger">Delete</a></td>
+										<p th:case="false">
+										<td><a
+											th:href="${'/resource/offerResource/' + resource.id}"
+											class="btn btn-warning">Offer Resource</a></td>
+										</p>
+
+
+									</div>
+
 								</tr>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-		<!--  	<div class="col-sm-4">
+			<!--  	<div class="col-sm-4">
 
 				<div class="panel-group" id="accordion" role="tablist"
 					aria-multiselectable="true">
