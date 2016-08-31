@@ -31,6 +31,7 @@ import cs544.project.share2care.service.impl.UserServiceImpl;
  */
 @Controller
 @RequestMapping("/login")
+@SessionAttributes("userLoggedIn")
 public class UserController {
 	Logger logger = Logger.getLogger(UserController.class);
 	@Autowired
@@ -40,13 +41,15 @@ public class UserController {
 	IMemberService memberService;	
 	
 	@RequestMapping("/handleLogin")
-	public String handleLogin() {
+	public String handleLogin(Model model) {
 		String view = "";
 		if (userHasAuthority("ROLE_ADMIN")) {
 			view = "/admin/dashboard";
+			model.addAttribute("userLoggedIn", true);
 			logger.info("admin logged into system");
 		} else if (userHasAuthority("ROLE_USER")) {
 			view = "/user/dashboard";
+			model.addAttribute("userLoggedIn", true);
 			logger.info("user logged into system");
 		}
 		return "redirect:" + view;
