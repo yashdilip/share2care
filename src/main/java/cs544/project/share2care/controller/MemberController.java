@@ -96,6 +96,13 @@ public class MemberController {
 		return "/users/user/memberprofile";
 	}
 
+	@RequestMapping(value = "/profile/{memberId}", method = RequestMethod.GET)
+	public String showProfileOfMember(@PathVariable("memberId") Integer memberId, Model model, HttpSession session) {
+		Member member = memberService.getMemberByMemberId(memberId);
+		model.addAttribute("member", member);
+		return "/users/user/memberprofiledetail";
+	}
+	
 	@RequestMapping(value = "/profile", method = RequestMethod.POST)
 	public String editProfile(Member member, Principal principal, HttpSession session) throws IOException {
 
