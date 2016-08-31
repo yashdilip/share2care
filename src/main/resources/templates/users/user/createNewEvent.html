@@ -85,7 +85,7 @@
 				</script>
 				<div class="form-group">
 					<label for="upload-event-picture">Upload Event Picture:</label> <input
-						id="upload-event-picture" type="file" name="eventPicture" accept="*" />
+						id="upload-event-picture" type="file" name="eventPicture" accept="*" th:field="*{eventPicture}"/>
 					<br /> <span id="upload-pic-message"></span>
 
 				</div>
@@ -95,39 +95,6 @@
 	</div>
 
 	<!-- JavaScript to handle image upload using Ajax call -->
-	<script>
-		// bind the on-change event for the input element (triggered when a file
-		// is chosen)
-		$(document).ready(function() {
-			$("#upload-event-picture").on("change", uploadFile);
-		});
 
-		/**
-		 * Upload the file sending it via Ajax at the Spring Boot server.
-		 */
-		function uploadFile() {
-			$
-					.ajax({
-						url : "/event/uploadEventPicture"
-						type : "PUT",
-						data : new FormData($("#createNewEvent")[0]),
-						enctype : 'multipart/form-data',
-						processData : false,
-						contentType : false,
-						cache : false,
-						success : function() {
-							// Handle upload success
-							$("#upload-pic-message").text(
-									"Event picture has been succesfully uploaded");
-						},
-						error : function() {
-							// Handle upload error
-							$("#upload-pic-message")
-									.text(
-											"File was not uploaded (perhaps its size is big)");
-						}
-					});
-		} // function uploadFile
-	</script>
 </body>
 </html>
