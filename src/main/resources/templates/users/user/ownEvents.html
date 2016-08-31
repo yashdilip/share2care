@@ -11,7 +11,7 @@
 			<table class="table table-condensed">
 				<thead>
 					<tr>
-						<td colspan="4"><a th:href="@{/event/${event.id}}"><span
+						<td colspan="4"><a th:href="*{'/event/'+ event.id}"><span
 								th:text="${event.name}"></span></a></td>
 					</tr>
 				</thead>
@@ -19,9 +19,9 @@
 					<tr>
 						<td colspan="3" rowspan="3"><img
 							th:unless="${#lists.isEmpty(event.eventPicture)}"
-							th:src="@{'data:image/jpeg;base64,'+${event.eventPicture}}"
+							th:src="*{'/event/image/'+event.id}"
 							alt="EventImage" /></td>
-						<td><a th:href="@{/user/profile/${event.owner.memberId}}"><span
+						<td><a th:href="*{'/user/profile/'+ event.owner.memberId}"><span
 								th:text="${'By: ' + event.owner.firstName + ' ' + event.owner.lastName}"></span></a></td>
 					</tr>
 					<tr>
@@ -33,11 +33,11 @@
 							th:text="${event.venue != null} ? ${'Where: ' + event.venue.address.street + ' - ' + event.venue.address.city + ' - ' + event.venue.address.state} : 'Address not provided'"></td>
 					</tr>
 					<tr>
-						<td><a th:href="@{/event/resources/${event.id}}">Resources
+						<td><a th:href="*{'/event/resources/'+event.id}">Resources
 								Needed</a></td>
 						<td colspan="2"><a
-							th:href="@{/event/participants/${event.id}}">Participants</a></td>
-						<td><a th:href="@{/event/joinRequests/${event.id}}">Join
+							th:href="*{'/event/participants/'+ event.id}">Participants</a></td>
+						<td><a th:href="*{'/event/joinRequests/'+ event.id}">Join
 								Requests</a></td>
 					</tr>
 				</tbody>

@@ -35,7 +35,7 @@ public class Event {
 	@GeneratedValue
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name="ownerId")
 	private Member owner;
 	
@@ -62,7 +62,7 @@ public class Event {
 	@OneToMany(mappedBy="event")
 	private List<Resource> resources;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="venueId")
 	private Venue venue;
 	

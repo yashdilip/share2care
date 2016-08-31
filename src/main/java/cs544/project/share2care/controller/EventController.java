@@ -15,7 +15,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import cs544.project.share2care.domain.Event;
 import cs544.project.share2care.domain.EventCategory;
@@ -64,6 +69,12 @@ public class EventController {
 	public String getMyEvents(Model model, Principal principal){
 		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		List<Event> events = eventService.findOwnEvents(member.getMemberId());
+		for(Event e : events) {
+			if(e.getEventPicture() != null){
+				System.out.println("------------------"+e.getName()+" image "+e.getEventPicture().length);				
+			}
+			
+		}
 		model.addAttribute("events", events);
 		model.addAttribute("view", "users/user/ownEvents");
 		return "fragments/memberMasterPage";			
@@ -77,7 +88,7 @@ public class EventController {
 		return "fragments/memberMasterPage";				
 	}
 	
-	@RequestMapping(value="/pastEvents", method=RequestMethod.GET)
+	@RequestMapping(value="/past", method=RequestMethod.GET)
 	public String getPastEvents(Model model, Principal principal){
 		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		List<Event> events= eventService.findPastEvents(owner);
@@ -91,7 +102,10 @@ public class EventController {
 	public String getCreateNewEventForm(Model model, Principal principal) {
 		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
 		Event event = new Event();
+		Venue venue = new Venue();
 		event.setOwner(owner);
+		event.setVenue(venue);
+		owner.getEvents().add(event);
 		model.addAttribute("event", event);
 		model.addAttribute("visibilities", EventVisibility.values());
 		model.addAttribute("categories", EventCategory.values());
@@ -101,10 +115,15 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String processEventCreate(@Valid @ModelAttribute("event") Event event, BindingResult result, Model model) {
+	public String processEventCreate(@Valid @ModelAttribute("event") Event event, BindingResult result, HttpServletRequest request, Principal principal) throws IOException {
 		String view;
 		if (!result.hasErrors()) {
-			//memberService.saveMember(event.getOwner());
+			Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
+			event.setOwner(owner);
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		    MultipartFile file = multipartRequest.getFile("eventPicture");
+		    event.setEventPicture(file.getBytes());
+			memberService.saveMember(owner);
 			eventService.save(event);
 			view = "redirect:/event/"+event.getId();
 		} else {
@@ -134,6 +153,16 @@ public class EventController {
 		return;
 	}
 	
+	
+	 @RequestMapping(value = "/image/{eventId}", produces = MediaType.IMAGE_PNG_VALUE)
+	    public ResponseEntity<byte[]> getImage(@PathVariable("eventId") int eventId) throws IOException {
+	    	Event event = eventService.findById(eventId);
+	        byte[] imageContent = event.getEventPicture();
+	        final HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.IMAGE_PNG);
+	        return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
+	    }
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 //		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -142,7 +171,8 @@ public class EventController {
 		dateFormat.setLenient(true);
 		
 		binder.registerCustomEditor(Date.class, "event.startDateTime", new CustomDateEditor(dateFormat, true));
-		binder.registerCustomEditor(Date.class, "event.endDateTime", new CustomDateEditor(dateFormat, true));				
+		binder.registerCustomEditor(Date.class, "event.endDateTime", new CustomDateEditor(dateFormat, true));
+		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
 	}
 	
 
