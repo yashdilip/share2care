@@ -16,6 +16,7 @@
 
 					<h2 class="center">Create New Circle</h2>
 					<div>
+					<span th:text="${msg}" class="alert alert-info"></span>
 						<form class="form-horizontal" th:object="${circle}"
 							th:action="@{/circle/create}" method="post">
 							<span th:text="${msg}"></span>

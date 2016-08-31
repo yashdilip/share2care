@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+
+<body>
+
+	<div class="container">
+		<!--/*/ <th:block th:include="fragments/header_loggedin :: header"></th:block> /*/-->
+
+		<div class="row">
+			<div class="col-sm-8">
+				<span th:text="${msg}" class="alert alert-info"></span>
+
+				<form id="upload-file-form">
+					<label for="upload-file-input">Upload your file:</label> <input
+						id="upload-file-input" type="file" name="uploadfile" accept="*" />
+				</form>
+				<!-- Upload file form -->
+				<!-- <form id="upload-file-form">
+					<label for="upload-file-input">Upload your file:</label> <input
+						id="upload-file-input" type="file" name="uploadfile" accept="*" />
+				</form> -->
+			</div>
+			<div class="col-sm-4">
+
+				<!--/*/ <th:block th:include="fragments/rightsidebar :: rightsidebar"></th:block> /*/-->
+			</div>
+		</div>
+
+	</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	  $("#upload-file-input").on("change", uploadFile);
+	});
+function uploadFile() {
+	  $.ajax({
+	    url: "/rest/uploadFile",
+	    type: "POST",
+	    data: new FormData($("#upload-file-form")[0]),
+	    enctype: 'multipart/form-data',
+	    processData: false,
+	    contentType: false,
+	    cache: false,
+	    success: function () {
+	      // Handle upload success
+	      // ...
+	      alert("file uploaded successfully");
+	    },
+	    error: function () {
+	      // Handle upload error
+	      // ...
+	      alert("file is too large")
+	    }
+	  });
+	} 
+</script>
+</body>
+
+</html>

@@ -35,7 +35,7 @@ public class CircleService implements ICircleService{
 	@Override
 	public List<Circle> findAllCircles(Integer memberId) {
 		//return circleRepository.findByOwnerMemberId(memberId);
-		return circleRepository.findByMembersMemberMemberIdAndOwnerMemberId(memberId, memberId);
+		return circleRepository.findDistinctByMembersMemberMemberIdAndOwnerMemberId(memberId, memberId);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class CircleService implements ICircleService{
 	@Override
 	public List<Circle> findAllCirclesOfAppNotOwnedMyMember(Integer memberId) {
 		System.out.println(memberId);
-		return circleRepository.findByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(memberId, memberId);
+		return circleRepository.findDistinctByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(memberId, memberId);
 	}
 
 	@Override

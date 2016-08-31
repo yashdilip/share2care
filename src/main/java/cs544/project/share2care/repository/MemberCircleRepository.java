@@ -18,5 +18,5 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface MemberCircleRepository extends JpaRepository<MemberCircle, Integer> {
-	public MemberCircle findByCircleCircleIdAndMemberMemberId(Integer circleId, Integer memberId);
+	public MemberCircle findDistinctByCircleCircleIdAndMemberMemberId(Integer circleId, Integer memberId);
 }

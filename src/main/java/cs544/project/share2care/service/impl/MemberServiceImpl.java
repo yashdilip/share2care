@@ -82,12 +82,16 @@ public class MemberServiceImpl implements IMemberService{
 			memberCircle.setCircle(circle);
 			memberCircle.setMember(member);
 			MemberCircle mclist = memberCircleService.findByCircleIdandMemberId(circle.getCircleId(), member.getMemberId());
-			
+			if(mclist!=null){
 			if(mclist.getCircle().getCircleId()!=circle.getCircleId() && mclist.getMember().getMemberId()!=member.getMemberId()){
 				memberCircleService.saveMemberCircle(memberCircle);
-				return "saved";
+				return "saved successfully";
+			}}else{
+				memberCircleService.saveMemberCircle(memberCircle);
+				return "saved successfully";
 			}
-			return "not saved";
+			//memberCircleService.saveMemberCircle(memberCircle);
+			return "not saved. duplicate operation";
 	}
 
 }

@@ -27,7 +27,7 @@ public class MemberCircleServiceImpl implements IMemberCircleService{
 
 	@Override
 	public MemberCircle findByCircleIdandMemberId(Integer circleId, Integer memberId) {
-		return memberCircleRepository.findByCircleCircleIdAndMemberMemberId(circleId, memberId);
+		return memberCircleRepository.findDistinctByCircleCircleIdAndMemberMemberId(circleId, memberId);
 	}
 
 }

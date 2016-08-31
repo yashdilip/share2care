@@ -14,6 +14,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -134,10 +135,11 @@ public class MemberController {
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	
-	public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, HttpSession session) {
+	public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, HttpSession session, Model model) {
 		Member member = (Member) session.getAttribute("member");
-		
+		String msg ="";
 		try {
+			System.out.println(uploadfile.getSize());
 			// Get the filename and build the local file path
 			String filename = uploadfile.getOriginalFilename();
 			String directory = env.getProperty("netgloo.paths.uploadedFiles");
@@ -155,6 +157,7 @@ public class MemberController {
 			System.out.println(e.getMessage());
 			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		model.addAttribute("msg", msg);
 		return "redirect:/user/dashboard";
 		//return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -187,6 +190,7 @@ public class MemberController {
 		if(msg.contains("not saved")){
 			
 		}
+		model.addAttribute("msg", msg);
 		return "redirect:/user/discover";
 
 	}

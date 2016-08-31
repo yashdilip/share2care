@@ -28,7 +28,7 @@ public interface CircleRepository extends JpaRepository<Circle, Integer>{
 	
 	public List<Circle> findByOwnerMemberIdIsNot(Integer memberId);
 	
-	public List<Circle> findByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(Integer memberId, Integer memberID);
+	public List<Circle> findDistinctByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(Integer memberId, Integer memberID);
 	
-	public List<Circle> findByMembersMemberMemberIdAndOwnerMemberId(Integer memberId, Integer memberID);
+	public List<Circle> findDistinctByMembersMemberMemberIdAndOwnerMemberId(Integer memberId, Integer memberID);
 }

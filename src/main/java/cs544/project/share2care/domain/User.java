@@ -3,6 +3,7 @@
  */
 package cs544.project.share2care.domain;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author Dilip
@@ -39,6 +42,9 @@ public class User {
 
 	@Column(name = "enabled")
 	private int enabled;
+	
+	@Temporal(TemporalType.DATE)
+	private Date createdDate;
 	
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
@@ -104,4 +110,13 @@ public class User {
 	public void setRole(UserRole role) {
 		this.role = role;
 	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	
 }
