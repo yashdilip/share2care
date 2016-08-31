@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import cs544.project.share2care.domain.Circle;
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.MemberCircle;
 
@@ -15,10 +16,8 @@ import cs544.project.share2care.domain.MemberCircle;
  *
  */
 @Service
-public interface IMemberCircleService {
-	void saveMemberCircle(MemberCircle memberCircle);
-	MemberCircle findByCircleIdandMemberId(Integer circleId, Integer memberId);
-	List<Member> findMembersOfACircle(Integer circleId);
-	
-	List<MemberCircle> findAllMemberCircle();
+public interface IServiceUtil {
+	public List<MemberCircle> getAllMemberCircleList();
+	public List<Circle> getAllCircleNotContainingMe(Integer memberId);
+	public List<Circle> getAllCircleBelongsToMe(Integer memberId);
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import cs544.project.share2care.domain.Circle;
+import cs544.project.share2care.domain.Member;
 
 /**
  * @author Dilip
@@ -31,4 +32,10 @@ public interface CircleRepository extends JpaRepository<Circle, Integer>{
 	public List<Circle> findDistinctByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(Integer memberId, Integer memberID);
 	
 	public List<Circle> findDistinctByMembersMemberMemberIdAndOwnerMemberId(Integer memberId, Integer memberID);
+	
+	/*@Query("select distinct c from Circle c where :member not in c.members")
+	public List<Circle> findAllCirclesNotBelongToMe(Member member);*/
+	
+	//public List<Circle> findByMembersNotContainingAndOwnerIsNot(Member member, Member mem);
+	
 }
