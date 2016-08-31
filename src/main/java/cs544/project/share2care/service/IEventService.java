@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import cs544.project.share2care.domain.Event;
+import cs544.project.share2care.domain.EventVisibility;
 import cs544.project.share2care.domain.Member;
 
 /**
@@ -29,4 +30,6 @@ public interface IEventService {
 	List<Event> findEventsByStartDate(Date date);
 	//Upcoming events in a given city and on a given date
 	List<Event> findEventsByCityAndStartDate(String city, Date date);
+	//Discover new events
+	List<Event> discoverNewEvents(int memId1, int memId2, EventVisibility visibility);
 }

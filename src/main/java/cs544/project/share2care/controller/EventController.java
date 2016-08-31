@@ -97,6 +97,15 @@ public class EventController {
 		return "fragments/memberMasterPage";				
 	}
 	
+	@RequestMapping(value="/discover", method=RequestMethod.GET)
+	public String discoverEvents(Model model, Principal principal){
+		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
+		List<Event> events= eventService.discoverNewEvents(owner.getMemberId(), owner.getMemberId(), EventVisibility.PUBLIC);
+		model.addAttribute("events", events);		
+		model.addAttribute("view", "users/user/discoverEvents");
+		return "fragments/memberMasterPage";				
+	}
+	
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String getCreateNewEventForm(Model model, Principal principal) {
@@ -125,7 +134,7 @@ public class EventController {
 		    event.setEventPicture(file.getBytes());
 			memberService.saveMember(owner);
 			eventService.save(event);
-			view = "redirect:/event/"+event.getId();
+			view = "redirect:/resource/addresource/"+event.getId();
 		} else {
 			view = "users/user/createNewEvent";
 		}
