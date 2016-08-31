@@ -49,8 +49,8 @@ public class AppConfigForMysqlAuthentication {
 	@Bean
 	MultipartConfigElement multipartConfigElement() {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
-		factory.setMaxFileSize("5120MB");
-		factory.setMaxRequestSize("5120MB");
+		factory.setMaxFileSize(environment.getProperty("multipart.maxFileSize"));
+		factory.setMaxRequestSize(environment.getProperty("multipart.maxRequestSize"));
 		return factory.createMultipartConfig();
 	}
 

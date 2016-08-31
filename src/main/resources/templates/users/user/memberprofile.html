@@ -16,6 +16,7 @@
 
 					<h2 class="text-center">Member Profile</h2>
 					<div>
+					<span th:text="${msg}" class="alert alert-info"></span>
 						<form class="form-horizontal" th:object="${member}"
 							th:action="@{/user/profile}" method="post"
 							enctype="multipart/form-data">
@@ -37,7 +38,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Email:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"
+									<input type="email" class="form-control"
 										th:field="${member.email}" />
 								</div>
 							</div>

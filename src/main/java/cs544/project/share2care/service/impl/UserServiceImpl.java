@@ -3,6 +3,8 @@
  */
 package cs544.project.share2care.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,13 @@ public class UserServiceImpl implements IUserService {
 		user.setEnabled(1);
 		userRepository.save(user);
 		return user.getUsername();
+	}
+	/* (non-Javadoc)
+	 * @see cs544.project.share2care.service.IUserService#getAllUsers()
+	 */
+	@Override
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 
 }

@@ -16,6 +16,8 @@ import cs544.project.share2care.repository.CircleRepository;
 import cs544.project.share2care.repository.MemberRepository;
 import cs544.project.share2care.service.ICircleService;
 import cs544.project.share2care.service.IMemberCircleService;
+import cs544.project.share2care.service.IMemberService;
+import cs544.project.share2care.service.IServiceUtil;
 
 /**
  * @author Dilip
@@ -32,10 +34,16 @@ public class CircleService implements ICircleService{
 	@Autowired
 	private IMemberCircleService memberCircleService;
 	
+	@Autowired
+	private IMemberService memberService;
+	
+	@Autowired
+	private IServiceUtil serviceUtil;
+	
 	@Override
 	public List<Circle> findAllCircles(Integer memberId) {
-		//return circleRepository.findByOwnerMemberId(memberId);
-		return circleRepository.findByMembersMemberMemberIdAndOwnerMemberId(memberId, memberId);
+		return serviceUtil.getAllCircleBelongsToMe(memberId);
+	
 	}
 
 	@Override
@@ -78,7 +86,7 @@ public class CircleService implements ICircleService{
 	@Override
 	public List<Circle> findAllCirclesOfAppNotOwnedMyMember(Integer memberId) {
 		System.out.println(memberId);
-		return circleRepository.findByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(memberId, memberId);
+		return serviceUtil.getAllCircleNotContainingMe(memberId);
 	}
 
 	@Override

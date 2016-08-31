@@ -3,6 +3,8 @@
  */
 package cs544.project.share2care.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
 import cs544.project.share2care.domain.UserRole;
+import cs544.project.share2care.scheduler.MySchedule;
 import cs544.project.share2care.service.IMemberService;
 import cs544.project.share2care.service.IUserService;
 import cs544.project.share2care.service.impl.UserServiceImpl;
@@ -71,6 +74,8 @@ public class UserController {
 				return "/users/user/error";
 			}
 		}
+		Date date = new Date();
+		user.setCreatedDate(date);
 		user.setRole(UserRole.ROLE_USER);
 		userService.saveNewUser(user);
 		
