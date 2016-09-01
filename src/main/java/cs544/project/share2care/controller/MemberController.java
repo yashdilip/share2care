@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthSeparatorUI;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -202,6 +203,14 @@ public class MemberController {
 
 	}
 	
+	@RequestMapping(value="/discover/circle/{circleId}", method = RequestMethod.GET)
+	public String discoverOwnFriends(@PathVariable("circleId") Integer circleId, Model model){
+		List<Member> memberlist = memberService.getAllMemberOfACircle(circleId);
+		model.addAttribute("memberlist", memberlist);
+		
+		return "/users/user/friendlist";
+	}
+	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -210,5 +219,15 @@ public class MemberController {
 		}
 		return "redirect:/login?logout";
 	}
+	
+	@RequestMapping(value="/discover/friends", method = RequestMethod.GET)
+	public String showMyFriend(Model model, HttpSession session){
+		Integer memberId = ((Member) session.getAttribute("member")).getMemberId();
+		List<Member> memberlist = memberService.allFriends(memberId);
+		model.addAttribute("memberlist", memberlist);
+		return "/users/user/allfriendlist";
+	}
 
+	
+	
 }

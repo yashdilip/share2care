@@ -3,6 +3,7 @@
  */
 package cs544.project.share2care.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,14 @@ public class MemberCircleServiceImpl implements IMemberCircleService{
 
 	@Override
 	public List<MemberCircle> findAllMemberCircle() {
+		
 		return memberCircleRepository.findAll();
+	}
+
+
+	@Override
+	public List<Member> getAllMemberOfACircle(Integer circleId) {
+		return memberCircleRepository.getAllMemberOfACircle(circleId);
 	}
 
 }

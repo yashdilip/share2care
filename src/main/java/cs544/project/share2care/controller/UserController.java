@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -62,7 +65,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
-	public String signupProcess(User user, RedirectAttributes redirectAttrs, Model model){
+	public String signupProcess(@Valid User user, BindingResult result, Errors errors, RedirectAttributes redirectAttrs, Model model){
+		if(result.hasErrors()){
+			errors.reject("invalied inputs");
+			return "redirect:/users/user/error";
+		}
 		if(user!=null){
 			User usr = new User();
 			usr = userService.getUserByUsername(user.getUsername());
