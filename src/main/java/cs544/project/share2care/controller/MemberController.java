@@ -15,10 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthSeparatorUI;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -102,7 +105,7 @@ public class MemberController {
 		model.addAttribute("member", member);
 		return "/users/user/memberprofiledetail";
 	}
-	
+
 	@RequestMapping(value = "/profile", method = RequestMethod.POST)
 	public String editProfile(Member member, Principal principal, HttpSession session) throws IOException {
 
@@ -141,67 +144,75 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	
+
 	public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, HttpSession session, Model model) {
 		Member member = (Member) session.getAttribute("member");
-		String msg ="";
+		String msg = "";
 		try {
 			System.out.println(uploadfile.getSize());
 			// Get the filename and build the local file path
 			String filename = uploadfile.getOriginalFilename();
 			String directory = env.getProperty("netgloo.paths.uploadedFiles");
 			String filepath = Paths.get(directory, filename).toString();
-			
+
 			member.setImageLocation(filepath);
 			member.setProfilePictures(uploadfile.getBytes());
 			memberService.saveMember(member);
-			System.out.println(filepath+"-------> "+directory+" -------->"+filename);
+			System.out.println(filepath + "-------> " + directory + " -------->" + filename);
 			// Save the file locally
 			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filepath)));
 			stream.write(uploadfile.getBytes());
 			stream.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			// return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		model.addAttribute("msg", msg);
 		return "redirect:/user/dashboard";
-		//return new ResponseEntity<>(HttpStatus.OK);
+		// return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/discover", method = RequestMethod.GET)
-	public String viewAllMembersofApp(Model model, HttpSession session){
-		Integer memberId = ((Member)session.getAttribute("member")).getMemberId();
+	@RequestMapping(value = "/discover", method = RequestMethod.GET)
+	public String viewAllMembersofApp(Model model, HttpSession session) {
+		Integer memberId = ((Member) session.getAttribute("member")).getMemberId();
 		List<Member> members = memberService.findAllMembersNotMe(memberId);
 		model.addAttribute("members", members);
 		return "/users/user/memberlists";
 	}
-	
-	@RequestMapping(value="/discover/{memberId}", method = RequestMethod.GET)
-	public String viewMembersDetail(@PathVariable("memberId") Integer memberId, Model model, HttpSession session){
+
+	@RequestMapping(value = "/discover/{memberId}", method = RequestMethod.GET)
+	public String viewMembersDetail(@PathVariable("memberId") Integer memberId, Model model, HttpSession session) {
 		Member member = memberService.getMemberByMemberId(memberId);
 		model.addAttribute("member", member);
 		return "/users/user/memberprofile2add";
 	}
-	
-	@RequestMapping(value="/discover/addfriendtocircle/{memberId}", method = RequestMethod.GET)
-	public String addToCircle(@PathVariable("memberId") int memberId, Model model, HttpSession session){
+
+	@RequestMapping(value = "/discover/addfriendtocircle/{memberId}", method = RequestMethod.GET)
+	public String addToCircle(@PathVariable("memberId") int memberId, Model model, HttpSession session) {
 		System.out.println("be friend is here");
-		String msg ="";
+		String msg = "";
 		Member m = (Member) session.getAttribute("member");
 		Circle circle = circleService.findAllCircles(m.getMemberId()).get(0);
 		Member mem = memberService.getMemberByMemberId(memberId);
-		if(circle!=null){
-			msg = memberService.addMemberIntoCircle(mem,circle);
+		if (circle != null) {
+			msg = memberService.addMemberIntoCircle(mem, circle);
 		}
-		if(msg.contains("not saved")){
-			
+		if (msg.contains("not saved")) {
+
 		}
 		model.addAttribute("msg", msg);
 		return "redirect:/user/discover";
 
 	}
-	
+
+	@RequestMapping(value = "/discover/circle/{circleId}", method = RequestMethod.GET)
+	public String discoverOwnFriends(@PathVariable("circleId") Integer circleId, Model model) {
+		List<Member> memberlist = memberService.getAllMemberOfACircle(circleId);
+		model.addAttribute("memberlist", memberlist);
+
+		return "/users/user/friendlist";
+	}
+
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -209,6 +220,26 @@ public class MemberController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		return "redirect:/login?logout";
+	}
+
+	@RequestMapping(value = "/discover/friends", method = RequestMethod.GET)
+	public String showMyFriend(Model model, HttpSession session) {
+		Integer memberId = ((Member) session.getAttribute("member")).getMemberId();
+		List<Member> memberlist = memberService.allFriends(memberId);
+		model.addAttribute("memberlist", memberlist);
+		return "/users/user/allfriendlist";
+	}
+
+	@RequestMapping(value = "/image/{memberId}", produces = MediaType.IMAGE_PNG_VALUE)
+	public ResponseEntity<byte[]> getImage(@PathVariable("memberId") Integer memberId) throws IOException {
+		Member member = memberService.getMemberByMemberId(memberId);
+		byte[] image = member.getProfilePictures();
+
+		// Event event = eventService.findById(eventId);
+		// byte[] imageContent = event.getEventPicture();
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
 	}
 
 }

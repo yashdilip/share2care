@@ -26,4 +26,7 @@ public interface MemberCircleRepository extends JpaRepository<MemberCircle, Inte
 	
 	public List<Member> findDistinctMemberByCircleCircleId(Integer circleId);
 	
+	@Query("select distinct m.member from MemberCircle m where m.circle.circleId=:circleId")
+	public List<Member> getAllMemberOfACircle(@Param("circleId") Integer circleId);
+	
 }

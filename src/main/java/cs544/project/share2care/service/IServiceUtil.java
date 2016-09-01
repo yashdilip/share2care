@@ -20,4 +20,7 @@ public interface IServiceUtil {
 	public List<MemberCircle> getAllMemberCircleList();
 	public List<Circle> getAllCircleNotContainingMe(Integer memberId);
 	public List<Circle> getAllCircleBelongsToMe(Integer memberId);
+	public List<Member> getAllNewMembers(Integer memberId);
+	public List<Member> getAllFriends(Integer circleId);
+	
 }

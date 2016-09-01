@@ -38,4 +38,9 @@ public interface CircleRepository extends JpaRepository<Circle, Integer>{
 	
 	//public List<Circle> findByMembersNotContainingAndOwnerIsNot(Member member, Member mem);
 	
+	@Query("from Circle c join c.owner o where c.circleName like CONCAT('%',:keyword,'%')")
+	List<Circle> findAllCirclesByKeyword(@Param("keyword") String keyword);
+	
+	List<Circle> findDistinctByCircleNameIsLike(String keyword);
+	
 }

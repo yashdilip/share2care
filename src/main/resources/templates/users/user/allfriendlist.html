@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Share2Care | Friends | All</title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+	<div class="container">
+		<!--/*/ <th:block th:include="fragments/header_loggedin :: header"></th:block> /*/-->
+
+		<div class="row">
+			<div class="col-sm-8">
+			<div class="">
+
+					<h2 class="center">All Circles | Friends <span th:text="${msg}"></span></h2>
+					<div>
+							<div th:if="${not #lists.isEmpty(memberlist)}">
+								<table class="table table-striped">
+									<tr>
+										<th></th>
+										<th>Id</th>
+										<th>Friend's Name</th>
+										<th>View Details</th>
+
+									</tr>
+									<tr th:each="member : ${memberlist}">
+									<td><img th:unless="${#lists.isEmpty(member.profilePictures)}" th:src="*{'/user/image/'+member.memberId}" alt="MemberImage" /></td>
+										<td th:text="${member.memberId}"><a href="/user/profile/${member.memberId}">Id</a></td>
+										<td th:text="${member.firstName} + ${member.lastName}">Friend's Name</td>
+										<td><a th:href="${'/user/profile/' + member.memberId}" class="btn btn-primary">View Details</a></td>
+									 </tr>
+								</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<!--/*/ <th:block th:include="fragments/rightsidebar :: rightsidebar"></th:block> /*/-->
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+</html>

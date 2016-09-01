@@ -21,4 +21,6 @@ public interface IMemberCircleService {
 	List<Member> findMembersOfACircle(Integer circleId);
 	
 	List<MemberCircle> findAllMemberCircle();
+	
+	List<Member> getAllMemberOfACircle(Integer circleId);
 }

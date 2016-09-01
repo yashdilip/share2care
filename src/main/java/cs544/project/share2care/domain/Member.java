@@ -18,18 +18,23 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.Constraint;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 
 /**
  * @author Dilip
  *
  */
 @Entity
-public class Member {
+public class Member implements Comparable<Member> {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int memberId;
-	
+	@NotNull(message="first name required")
 	private String firstName;
 	private String lastName;
+	@NotNull(message="email can not be empty")
+	@Email(message="email format not matched")
 	private String email;
 	private String phoneNumber;
 	@Embedded
@@ -142,6 +147,11 @@ public class Member {
 	}
 	public void setCircles(List<MemberCircle> circles) {
 		this.circles = circles;
+	}
+
+	@Override
+	public int compareTo(Member o) {
+		return this.memberId-o.getMemberId();
 	}
 	
 }

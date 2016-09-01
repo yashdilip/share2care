@@ -7,9 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -101,7 +105,11 @@ public class CircleController {
 	}
 	
 	@RequestMapping(value="/join/{circleId}", method=RequestMethod.POST)
-	public String joinCircle(@PathVariable("circleId") String circleId, Circle circle, Model model, HttpSession session){
+	public String joinCircle(@PathVariable("circleId") String circleId, Circle circle, BindingResult result, Model model, HttpSession session, Errors errors){
+		/*if(result.hasErrors()){
+			errors.reject("join", "already joined");
+			return "redirect:/circle/join/"+circle.getCircleId();
+		}*/
 		Integer memberId = Integer.valueOf(((Member) session.getAttribute("member")).getMemberId());
 		String msg = circleService.joinCircle(Integer.valueOf(circleId), memberId);
 		model.addAttribute("msg", msg);

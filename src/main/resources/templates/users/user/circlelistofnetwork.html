@@ -31,7 +31,7 @@
 										<td th:text="${circle.owner.firstName} + ${circle.owner.lastName}">Circle Owner's Name</td>
 										<td><a th:href="${'/circle/view/' + circle.circleId}" class="btn btn-primary">View Circle</a></td>
 										<td><a th:href="${'/circle/join/' + circle.circleId}" class="btn btn-warning">Join Circle</a></td>
-										<td><a th:href="${'/circle/member/show' + circle.circleId}"	class="btn btn-warning">Show Circle Members</a></td>
+										<td><a th:href="${'/user/discover/circle/' + circle.circleId}"	class="btn btn-warning">Show Circle Members</a></td>
 									 </tr>
 								</table>
 						</div>
