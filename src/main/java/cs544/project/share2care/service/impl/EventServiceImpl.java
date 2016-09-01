@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cs544.project.share2care.domain.Event;
+import cs544.project.share2care.domain.EventVisibility;
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.repository.EventRepository;
 import cs544.project.share2care.service.IEventService;
@@ -67,6 +68,11 @@ public class EventServiceImpl implements IEventService {
 	@Override
 	public List<Event> findEventsByCity(String city) {
 		return eventRepository.findByVenueAddressCityIgnoreCaseAndStartDateTimeBefore(city, new Date());
+	}
+	
+	@Override
+	public List<Event> discoverNewEvents(int memId1, int memId2, EventVisibility visibility){
+		return eventRepository.findByOwnerMemberIdIsNotAndParticipantsParticipantMemberIdIsNotAndVisibility(memId1, memId2, visibility);
 	}
 
 	@Override

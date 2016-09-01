@@ -112,7 +112,7 @@ footer {
 							href="member_page.html" th:href="@{/event/myEvents}">My
 								Events</a></li>
 						<li
-							th:classappend="${#httpServletRequest.getRequestURI() == '/event/upcoming' ? 'active':''}"><a
+							th:classappend="${#httpServletRequest.getRequestURI() == '/event' ? 'active':''}"><a
 							href="member_page.html" th:href="@{/event}">Upcoming</a></li>
 						<li
 							th:classappend="${#httpServletRequest.getRequestURI() == '/event/past' ? 'active':''}"><a

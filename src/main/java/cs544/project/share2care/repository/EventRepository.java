@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import cs544.project.share2care.domain.Event;
 import cs544.project.share2care.domain.EventStatus;
+import cs544.project.share2care.domain.EventVisibility;
 import cs544.project.share2care.domain.Member;
 
 public interface EventRepository extends JpaRepository<Event, Integer>{
@@ -32,6 +33,8 @@ public interface EventRepository extends JpaRepository<Event, Integer>{
 //    List<Event> findPastEvents(@Param("participant") Member participant);
     List<Event> findByParticipantsParticipantAndStartDateTimeAfter(Member participant, Date date);
     List<Event> findByParticipantsParticipantAndEndDateTimeBefore(Member participant, Date date);
+    //Discover events I'm not going for yet or events that are not mine
+    List<Event> findByOwnerMemberIdIsNotAndParticipantsParticipantMemberIdIsNotAndVisibility(Integer memId1, Integer memId2, EventVisibility visibility);
 	/* remove event(s) */
 	Long deleteByOwnerMemberId(int memberId);
 	
