@@ -21,12 +21,14 @@
 							<div th:if="${not #lists.isEmpty(memberlist)}">
 								<table class="table table-striped">
 									<tr>
+										<th></th>
 										<th>Id</th>
 										<th>Friend's Name</th>
 										<th>View Details</th>
 
 									</tr>
 									<tr th:each="member : ${memberlist}">
+									<td><img th:unless="${#lists.isEmpty(member.profilePictures)}" th:src="*{'/user/image/'+member.memberId}" alt="MemberImage" /></td>
 										<td th:text="${member.memberId}"><a href="/user/profile/${member.memberId}">Id</a></td>
 										<td th:text="${member.firstName} + ${member.lastName}">Friend's Name</td>
 										<td><a th:href="${'/user/profile/' + member.memberId}" class="btn btn-primary">View Details</a></td>
