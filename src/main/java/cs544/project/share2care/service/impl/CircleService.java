@@ -16,26 +16,34 @@ import cs544.project.share2care.repository.CircleRepository;
 import cs544.project.share2care.repository.MemberRepository;
 import cs544.project.share2care.service.ICircleService;
 import cs544.project.share2care.service.IMemberCircleService;
+import cs544.project.share2care.service.IMemberService;
+import cs544.project.share2care.service.IServiceUtil;
 
 /**
  * @author Dilip
  *
  */
 @Component
-public class CircleService implements ICircleService{
+public class CircleService implements ICircleService {
 	@Autowired
 	private CircleRepository circleRepository;
-	
+
 	@Autowired
 	private MemberRepository memberRepository;
-	
+
 	@Autowired
 	private IMemberCircleService memberCircleService;
-	
+
+	@Autowired
+	private IMemberService memberService;
+
+	@Autowired
+	private IServiceUtil serviceUtil;
+
 	@Override
 	public List<Circle> findAllCircles(Integer memberId) {
-		//return circleRepository.findByOwnerMemberId(memberId);
-		return circleRepository.findByMembersMemberMemberIdAndOwnerMemberId(memberId, memberId);
+		return serviceUtil.getAllCircleBelongsToMe(memberId);
+
 	}
 
 	@Override
@@ -51,22 +59,27 @@ public class CircleService implements ICircleService{
 		memberCircle.setCircle(circle);
 		circleRepository.save(circle);
 		memberCircleService.saveMemberCircle(memberCircle);
-		
+
 	}
 
 	@Override
 	public String joinCircle(Integer circleId, Integer memberId) {
 		Member member = memberRepository.findOne(memberId);
 		Circle circle = circleRepository.findOneCircleByCircleId(circleId);
-		
-		MemberCircle memberCircle = new MemberCircle();
-		memberCircle.setCircle(circle);
-		memberCircle.setMember(member);
-		if(memberCircle.getMember().getMemberId()!=memberId || memberCircle.getCircle().getCircleId()!=circleId){
+
+		MemberCircle mc = memberCircleService.findByCircleIdandMemberId(circleId, memberId);
+
+		if (mc != null) {
+			if (mc.getMember().getMemberId() == memberId && mc.getCircle().getCircleId() == circleId) {
+				return "duplicate entry";
+			}
+		} else {
+			MemberCircle memberCircle = new MemberCircle();
+			memberCircle.setCircle(circle);
+			memberCircle.setMember(member);
 			memberCircleService.saveMemberCircle(memberCircle);
-		}else{
-			return "duplicate entry";
 		}
+
 		return "circle joined successfully";
 	}
 
@@ -78,7 +91,7 @@ public class CircleService implements ICircleService{
 	@Override
 	public List<Circle> findAllCirclesOfAppNotOwnedMyMember(Integer memberId) {
 		System.out.println(memberId);
-		return circleRepository.findByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(memberId, memberId);
+		return serviceUtil.getAllCircleNotContainingMe(memberId);
 	}
 
 	@Override
@@ -86,7 +99,12 @@ public class CircleService implements ICircleService{
 		Circle c = circleRepository.findOne(circle.getCircleId());
 		c.setCircleName(circle.getCircleName());
 		circleRepository.save(circle);
-		
+
+	}
+
+	@Override
+	public List<Circle> searchCirclesByKeywords(String keyword) {		
+		return circleRepository.findAllCirclesByKeyword(keyword, keyword, keyword);
 	}
 
 }

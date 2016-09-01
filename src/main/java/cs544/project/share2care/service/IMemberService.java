@@ -23,4 +23,7 @@ public interface IMemberService {
 	List<Member> findMembersOfCircleByCircleId(Integer circleId);
 	Member getMemberByMemberId(Integer memberId);
 	String addMemberIntoCircle(Member member, Circle circle);
+	List<Member> getAllMemberOfACircle(Integer circleId);
+	List<Member> allFriends(Integer memberId);
+	List<Member> searchMembersByKeyword(String keyword);
 }

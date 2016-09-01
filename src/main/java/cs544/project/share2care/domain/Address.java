@@ -3,7 +3,9 @@
  */
 package cs544.project.share2care.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 
 /**
  * @author Solomon Kassahun
@@ -15,6 +17,7 @@ public class Address {
 	private String street;
 	private String city;
 	private String state;
+	@Size(max=5, message="zip code should be max 5 digit")
 	private String zip;
 	private String country;
 	

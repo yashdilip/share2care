@@ -23,4 +23,5 @@ public interface ICircleService {
 	List<Circle> findAllCirclesOfApp();
 	List<Circle> findAllCirclesOfAppNotOwnedMyMember(Integer memberId);
 	void saveUpdateCircle(Circle circle, Member member);
+	List<Circle> searchCirclesByKeywords(String keyword);
 }

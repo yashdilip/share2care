@@ -3,9 +3,12 @@
  */
 package cs544.project.share2care.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -21,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cs544.project.share2care.domain.Member;
 import cs544.project.share2care.domain.User;
 import cs544.project.share2care.domain.UserRole;
+import cs544.project.share2care.scheduler.MySchedule;
 import cs544.project.share2care.service.IMemberService;
 import cs544.project.share2care.service.IUserService;
 import cs544.project.share2care.service.impl.UserServiceImpl;
@@ -62,7 +68,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
-	public String signupProcess(User user, RedirectAttributes redirectAttrs, Model model){
+	public String signupProcess(@Valid User user, BindingResult result, Errors errors, RedirectAttributes redirectAttrs, Model model){
+		if(result.hasErrors()){
+			errors.reject("invalied inputs");
+			return "redirect:/users/user/error";
+		}
 		if(user!=null){
 			User usr = new User();
 			usr = userService.getUserByUsername(user.getUsername());
@@ -71,6 +81,8 @@ public class UserController {
 				return "/users/user/error";
 			}
 		}
+		Date date = new Date();
+		user.setCreatedDate(date);
 		user.setRole(UserRole.ROLE_USER);
 		userService.saveNewUser(user);
 		

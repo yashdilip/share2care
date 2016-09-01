@@ -16,7 +16,9 @@
 
 					<h2 class="text-center">Circle Details</h2>
 					<div>
-					<form class="form-horizontal" th:object="${circle}"  th:action="@{'/circle/join/'+${circle.circleId}}" method="post">
+						<span th:text="${msg}" class="alert alert-info"></span>
+						<form class="form-horizontal" th:object="${circle}"
+							th:action="@{'/circle/join/'+${circle.circleId}}" method="post">
 							<input type="hidden" th:field="${circle.circleId}" />
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Circle Id :</label>
@@ -25,7 +27,12 @@
 										Id</p>
 								</div>
 							</div>
-
+						<div class="alert alert-error" th:if="${#fields.hasErrors('*')}">
+							<ul class="unstyled">
+								<li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input
+									is incorrect</li>
+							</ul>
+						</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Owner Name:</label>
 								<div class="col-sm-6">
@@ -38,11 +45,13 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Circle Name :</label>
 								<div class="col-sm-6">
-									<p class="form-control-static" th:text="${circle.circleName}">Circle Name</p>
-								</div>								
+									<p class="form-control-static" th:text="${circle.circleName}">Circle
+										Name</p>
+								</div>
 							</div>
 							<div class="row">
-								<button type="submit" class="btn btn-primary">Join Group</button>
+								<button type="submit" class="btn btn-primary">Join
+									Group</button>
 							</div>
 						</form>
 					</div>

@@ -18,6 +18,7 @@ import cs544.project.share2care.repository.UserRepository;
 import cs544.project.share2care.service.ICircleService;
 import cs544.project.share2care.service.IMemberCircleService;
 import cs544.project.share2care.service.IMemberService;
+import cs544.project.share2care.service.IServiceUtil;
 
 /**
  * @author Dilip
@@ -34,6 +35,8 @@ public class MemberServiceImpl implements IMemberService{
 	private ICircleService circleService;
 	@Autowired
 	private IMemberCircleService memberCircleService;
+	@Autowired
+	private IServiceUtil serviceUtil;
 	@Override
 	public Member getLoggedInMemeberByMemberName(String name) {
 		
@@ -62,7 +65,8 @@ public class MemberServiceImpl implements IMemberService{
 
 	@Override
 	public List<Member> findAllMembersNotMe(Integer memberId) {
-		return memberRepository.findByMemberIdIsNot(memberId);
+		//return memberRepository.findByMemberIdIsNot(memberId);
+		return serviceUtil.getAllNewMembers(memberId);
 	}
 
 	@Override
@@ -82,12 +86,33 @@ public class MemberServiceImpl implements IMemberService{
 			memberCircle.setCircle(circle);
 			memberCircle.setMember(member);
 			MemberCircle mclist = memberCircleService.findByCircleIdandMemberId(circle.getCircleId(), member.getMemberId());
-			
+			if(mclist!=null){
 			if(mclist.getCircle().getCircleId()!=circle.getCircleId() && mclist.getMember().getMemberId()!=member.getMemberId()){
 				memberCircleService.saveMemberCircle(memberCircle);
-				return "saved";
+				return "saved successfully";
+			}}else{
+				memberCircleService.saveMemberCircle(memberCircle);
+				return "saved successfully";
 			}
-			return "not saved";
+			//memberCircleService.saveMemberCircle(memberCircle);
+			return "not saved. duplicate operation";
+	}
+
+
+	@Override
+	public List<Member> getAllMemberOfACircle(Integer circleId) {
+		return memberCircleService.getAllMemberOfACircle(circleId);
+	}
+
+	@Override
+	public List<Member> allFriends(Integer memberId) {
+		return serviceUtil.getAllFriends(memberId);
+	}
+
+
+	@Override
+	public List<Member> searchMembersByKeyword(String keyword) {
+		return memberRepository.findAllMembersByKeyword(keyword, keyword);
 	}
 
 }

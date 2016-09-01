@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import cs544.project.share2care.domain.Circle;
+import cs544.project.share2care.domain.Member;
 
 /**
  * @author Dilip
@@ -28,7 +29,16 @@ public interface CircleRepository extends JpaRepository<Circle, Integer>{
 	
 	public List<Circle> findByOwnerMemberIdIsNot(Integer memberId);
 	
-	public List<Circle> findByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(Integer memberId, Integer memberID);
+	public List<Circle> findDistinctByMembersMemberMemberIdIsNotAndOwnerMemberIdIsNot(Integer memberId, Integer memberID);
 	
-	public List<Circle> findByMembersMemberMemberIdAndOwnerMemberId(Integer memberId, Integer memberID);
+	public List<Circle> findDistinctByMembersMemberMemberIdAndOwnerMemberId(Integer memberId, Integer memberID);
+	
+	/*@Query("select distinct c from Circle c where :member not in c.members")
+	public List<Circle> findAllCirclesNotBelongToMe(Member member);*/
+	
+	//public List<Circle> findByMembersNotContainingAndOwnerIsNot(Member member, Member mem);
+	
+	@Query("from Circle c join c.owner o where c.circleName like CONCAT('%',:keyword,'%') or o.firstName like CONCAT('%',:keyw,'%') or o.lastName like CONCAT('%',:key,'%')")
+	List<Circle> findAllCirclesByKeyword(@Param("keyword") String keyword, @Param("keyw") String keyw, @Param("key") String key);
+	
 }

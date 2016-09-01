@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import cs544.project.share2care.domain.Circle;
 import cs544.project.share2care.domain.Member;
 
 /**
@@ -31,5 +30,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 	List<Member> findByCirclesCircleCircleId(Integer circleId);
 	//public List<Circle> findByOwnerMemberIdIsNot(Integer memberId);
 	List<Member> findByMemberIdIsNot(Integer memberId);
+	
+	@Query("from Member p where p.firstName like CONCAT('%',:keyword,'%') or p.lastName like CONCAT('%',:key,'%')")
+	List<Member> findAllMembersByKeyword(@Param("keyword") String keyword, @Param("key") String key);
 	
 }

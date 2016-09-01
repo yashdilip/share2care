@@ -15,16 +15,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Dilip
  *
  */
 @Entity
-public class Circle {
+public class Circle implements Comparable<Circle> {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int circleId;
 	
+	@NotNull(message="circle name required")
 	private String circleName;
 	
 	@OneToMany(mappedBy="circle")
@@ -67,6 +69,12 @@ public class Circle {
 
 	public void setMembers(List<MemberCircle> members) {
 		this.members = members;
+	}
+
+
+	@Override
+	public int compareTo(Circle o) {
+		return this.getCircleId()-o.getCircleId();
 	}
 		
 }
