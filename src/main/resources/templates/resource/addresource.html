@@ -19,7 +19,7 @@
 						<form class="form-horizontal" th:object="${resource}"
 							th:action="@{'/resource/addresource/'+${eventId}}" method="post"
 							enctype="multipart/form-data">
-							
+
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Resource Name :</label>
 								<div class="col-sm-6">
@@ -28,30 +28,33 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Resource Description :</label>
+								<label class="col-sm-2 control-label">Resource
+									Description :</label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control"
 										th:field="${resource.description}" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Resource Quantity :</label>
+								<label class="col-sm-2 control-label">Resource Quantity
+									:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"
+									<input type="number" class="form-control" min="1"
 										th:field="${resource.quantity}" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Resource Importance :</label>
+								<label class="col-sm-2 control-label">Resource
+									Importance :</label>
 								<div class="col-sm-6">
 									<select th:field="${resource.importance}">
 										<option
 											th:each="importance : ${T(cs544.project.share2care.domain.ResourceImportance).values()}"
-											th:value="${importance}" th:text="${importance}" ></option>
+											th:value="${importance}" th:text="${importance}"></option>
 									</select>
 								</div>
 							</div>
-					
+
 							<div class="row">
 								<button type="submit" class="btn btn-default">Submit</button>
 								<a href="/user/dashboard" class="btn btn-primary">Cancel</a>
@@ -63,61 +66,8 @@
 			</div>
 			<div class="col-sm-4">
 
-				<div class="panel-group" id="accordion" role="tablist"
-					aria-multiselectable="true">
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingOne">
-							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" data-parent="#accordion"
-									href="#collapseOne" aria-expanded="true"
-									aria-controls="collapseOne"> Member Service </a>
-							</h4>
-						</div>
-						<div id="collapseOne" class="panel-collapse collapse in"
-							role="tabpanel" aria-labelledby="headingOne">
-							<div class="panel-body">
-								<a href="#" th:href="@{/user/profile}" class="list-group-item">View/Edit
-									Profile</a> <a href="#" th:href="@{/user/uploadFile}" class="list-group-item">Upload Image</a>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingTwo">
-							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse"
-									data-parent="#accordion" href="#collapseTwo"
-									aria-expanded="false" aria-controls="collapseTwo"> Circle
-									Management </a>
-							</h4>
-						</div>
-						<div id="collapseTwo" class="panel-collapse collapse"
-							role="tabpanel" aria-labelledby="headingTwo">
-							<div class="panel-body">
-								<a href="#" th:href="@{/circle/create}" class="list-group-item">Create
-									New Circle</a> <a href="#" th:href="@{/circle/view}"
-									class="list-group-item">View Circle</a>
-									<a href="#" class="list-group-item">Join Circle</a>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingThree">
-							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse"
-									data-parent="#accordion" href="#collapseThree"
-									aria-expanded="false" aria-controls="collapseThree"> Make
-									Friends </a>
-							</h4>
-						</div>
-						<div id="collapseThree" class="panel-collapse collapse"
-							role="tabpanel" aria-labelledby="headingThree">
-							<div class="panel-body">
-								<a href="#" th:href="@{/user/profile}" class="list-group-item">Discover
-									Friends</a>
-							</div>
-						</div>
-					</div>
-				</div>
+
+				<!--/*/ <th:block th:include="fragments/rightsidebar :: rightsidebar"></th:block> /*/-->
 			</div>
 		</div>
 	</div>
