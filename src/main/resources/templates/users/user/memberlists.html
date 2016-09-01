@@ -26,7 +26,8 @@
 										<th></th>
 									</tr>
 									<tr th:each="member : ${members}">
-									<img  th:src="@{member.imageLocation}" />
+									<td colspan="3" rowspan="3"><img style="width:100%;height:100%" th:unless="${#lists.isEmpty(member.profilePictures)}" th:src="*{'/user/image/'+member.memberId}" alt="MemberImage" /></td>
+									<!-- <img  th:src="@{member.imageLocation}" /> -->
 										<td th:text="${member.memberId}"><a href="/user/discover/${member.memberId}" hidden="hidden">Circle Id</a></td>
 										<td th:text="${member.firstName} + ' ' + ${member.lastName}">Member Name</td>
 										<td th:text="${member.email}">Email</td>

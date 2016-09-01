@@ -109,7 +109,6 @@ public class ServiceUtilImpl implements IServiceUtil {
 				List<Member> mlist = memberService.getAllMemberOfACircle(c.getCircleId());
 				members_new.addAll(mlist);
 			}
-
 			return members_new;
 		}
 		return null;
