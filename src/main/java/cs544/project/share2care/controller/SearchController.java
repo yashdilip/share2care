@@ -32,15 +32,15 @@ public class SearchController {
 	@RequestMapping(value = "/advance", method = RequestMethod.POST)
 	public String searchProject(@RequestParam("searchText") String searchText, Model model, RedirectAttributes redirectAttributes) {
 		List<Member> memberlist = new ArrayList<Member>();
-		List<Circle> circlelist = new ArrayList<Circle>();
+		//List<Circle> circlelist = new ArrayList<Circle>();
 		memberlist = memberService.searchMembersByKeyword(searchText);
-		circlelist = circleService.searchCirclesByKeywords(searchText);
+		//circlelist = circleService.searchCirclesByKeywords(searchText);
 		
 		//String viewPath = "/users/user/searchresult";
 		//ModelAndView modelAndView = new ModelAndView(viewPath);
 		//modelAndView.addObject("circlelist", circlelist);
 		//modelAndView.addObject("memberlist", memberlist);
-		model.addAttribute("circlelist", circlelist);
+		//model.addAttribute("circlelist", circlelist);
 		model.addAttribute("memberlist", memberlist);
 		
 		return "/users/user/searchresult";

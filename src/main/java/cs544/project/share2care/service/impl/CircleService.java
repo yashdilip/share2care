@@ -104,7 +104,7 @@ public class CircleService implements ICircleService {
 
 	@Override
 	public List<Circle> searchCirclesByKeywords(String keyword) {		
-		return circleRepository.findAllCirclesByKeyword(keyword);
+		return circleRepository.findDistinctByCircleNameIsLike(keyword);
 	}
 
 }

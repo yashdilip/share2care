@@ -41,6 +41,6 @@ public interface CircleRepository extends JpaRepository<Circle, Integer>{
 	@Query("from Circle c join c.owner o where c.circleName like CONCAT('%',:keyword,'%')")
 	List<Circle> findAllCirclesByKeyword(@Param("keyword") String keyword);
 	
-	List<Circle> findDistinctByCircleNameLike(String keyword);
+	List<Circle> findDistinctByCircleNameIsLike(String keyword);
 	
 }
