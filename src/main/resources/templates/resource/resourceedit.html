@@ -17,9 +17,9 @@
 					<h2 class="text-center">Edit Resource</h2>
 					<div>
 						<form class="form-horizontal" th:object="${resource}"
-							th:action="@{/resource/editResource}" method="post"
-							enctype="multipart/form-data">
-							 <input type="hidden" th:value="${eventId}"  name="eventId"/>
+							th:action="@{'/resource/editResource/'+${resource.id} +'/'+ ${eventId}}"
+							method="post" enctype="multipart/form-data">
+
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Resource Name :</label>
 								<div class="col-sm-6">
@@ -28,30 +28,33 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Resource Description :</label>
+								<label class="col-sm-2 control-label">Resource
+									Description :</label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control"
 										th:field="${resource.description}" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Resource Quantity :</label>
+								<label class="col-sm-2 control-label">Resource Quantity
+									:</label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control"
+									<input type="number" class="form-control"
 										th:field="${resource.quantity}" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Resource Importance :</label>
+								<label class="col-sm-2 control-label">Resource
+									Importance :</label>
 								<div class="col-sm-6">
 									<select th:field="${resource.importance}">
 										<option
 											th:each="importance : ${T(cs544.project.share2care.domain.ResourceImportance).values()}"
-											th:value="${importance}" th:text="${importance}" ></option>
+											th:value="${importance}" th:text="${importance}"></option>
 									</select>
 								</div>
 							</div>
-					
+
 							<div class="row">
 								<button type="submit" class="btn btn-default">Submit</button>
 								<a href="/user/dashboard" class="btn btn-primary">Cancel</a>
@@ -77,7 +80,8 @@
 							role="tabpanel" aria-labelledby="headingOne">
 							<div class="panel-body">
 								<a href="#" th:href="@{/user/profile}" class="list-group-item">View/Edit
-									Profile</a> <a href="#" th:href="@{/user/uploadFile}" class="list-group-item">Upload Image</a>
+									Profile</a> <a href="#" th:href="@{/user/uploadFile}"
+									class="list-group-item">Upload Image</a>
 							</div>
 						</div>
 					</div>
@@ -95,8 +99,8 @@
 							<div class="panel-body">
 								<a href="#" th:href="@{/circle/create}" class="list-group-item">Create
 									New Circle</a> <a href="#" th:href="@{/circle/view}"
-									class="list-group-item">View Circle</a>
-									<a href="#" class="list-group-item">Join Circle</a>
+									class="list-group-item">View Circle</a> <a href="#"
+									class="list-group-item">Join Circle</a>
 							</div>
 						</div>
 					</div>

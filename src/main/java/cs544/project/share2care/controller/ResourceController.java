@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,29 +39,28 @@ public class ResourceController {
 	@Autowired
 	IMemberService memberService;
 
-	@RequestMapping(value = "addresource/{eventId}", method = RequestMethod.GET)
-	public String addResource(@PathVariable("eventId") int eventId, Model model) {
+	@RequestMapping(value = "/addresource/{eventId}", method = RequestMethod.GET)
+	public String addResource(@PathVariable("eventId") Integer eventId, Model model) {
 		Resource resource = new Resource();
 		model.addAttribute("resource", resource);
 		model.addAttribute("eventId", eventId);
 		return "/resource/addresource";
 	}
 
-	@RequestMapping(value = "/addresource", method = RequestMethod.POST)
-	public String addResourceFormProcess(Model model, Resource resource, HttpServletRequest request,
+	@RequestMapping(value = "/addresource/{eventId}", method = RequestMethod.POST)
+	public String addResourceFormProcess(@PathVariable("eventId") Integer eventId, Model model, Resource resource,
 			RedirectAttributes redirectAttributes) {
-		String eventIdStr = request.getParameter("eventId");
-		Event event = eventService.findById(Integer.valueOf(eventIdStr));
+		Event event = eventService.findById(eventId);
 		redirectAttributes.addFlashAttribute("event", event);
 		resource.setEvent(event);
 		resource.setStatus(ResourceStatus.NOTRECEIVED);
 		resourceService.saveOrUpdateResource(resource);
 
-		return "redirect:/resource/resourcelist";
+		return "redirect:/resource/getAllResourcesByEventId/" + eventId;
 	}
 
 	@RequestMapping(value = "/getAllResourcesByEventId/{eventId}", method = RequestMethod.GET)
-	public String getAllResourcesByEventId(@PathVariable("eventId") int eventId, Model model, HttpSession session) {
+	public String getAllResourcesByEventId(@PathVariable("eventId") Integer eventId, Model model, HttpSession session) {
 		Member member = (Member) session.getAttribute("member");
 		Event event = eventService.findById(eventId);
 		if (member.getMemberId() == event.getOwner().getMemberId()) {
@@ -76,60 +74,44 @@ public class ResourceController {
 		return "/resource/resourcelist";
 	}
 
-	@RequestMapping(value = "/resourcelist", method = RequestMethod.GET)
-	public String getAllResources(Model model, @ModelAttribute("event") Event event, HttpSession session) {
-		Member member = (Member) session.getAttribute("member");
-		if (member.getMemberId() == event.getOwner().getMemberId()) {
-			model.addAttribute("organizer", true);
-		} else {
-			model.addAttribute("organizer", false);
-		}
-		List<Resource> resourceList = resourceService.findAllByEventId(event.getId());
-		model.addAttribute("resources", resourceList);
-		return "/resource/resourcelist";
-	}
-
-	@RequestMapping(value = "/{resourceId}", method = RequestMethod.GET)
-	public String showResource(@PathVariable("resourceId") int resourceId, Model model) {
-		model.addAttribute("resource", resourceService.getResourceById(resourceId));
-		return "/resource/resourcedetail";
-	}
-
-	@RequestMapping(value = "/editResource/{resourceId}", method = RequestMethod.GET)
-	public String editResource(@PathVariable("resourceId") int resourceId, Model model,
-			RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/editResource/{resourceId}/{eventId}", method = RequestMethod.GET)
+	public String editResource(@PathVariable("resourceId") Integer resourceId, @PathVariable("eventId") Integer eventId,
+			Model model, RedirectAttributes redirectAttributes) {
 		Resource curResource = resourceService.getResourceById(resourceId);
-		Event curEvent = curResource.getEvent();
 		model.addAttribute("resource", curResource);
-		model.addAttribute("event", curEvent);
+		model.addAttribute("eventId", eventId);
 		return "/resource/resourceedit";
 	}
 
-	@RequestMapping(value = "/editResource", method = RequestMethod.POST)
-	public String editResourceFormProcess(Model model, Resource resource, @ModelAttribute("event") Event event,
+	@RequestMapping(value = "/editResource/{resourceId}/{eventId}", method = RequestMethod.POST)
+	public String editResourceFormProcess(@PathVariable("resourceId") Integer resourceId,
+			@PathVariable("eventId") Integer eventId, Model model, Resource resource, HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("event", resource.getEvent());
-		resourceService.saveOrUpdateResource(resource);
-		return "redirect:/resource/resourcelist";
+		Resource curResource = resourceService.getResourceById(resourceId);
+		curResource.setName(resource.getName());
+		curResource.setDescription(resource.getDescription());
+		curResource.setImportance(resource.getImportance());
+		curResource.setQuantity(resource.getQuantity());
+		resourceService.saveOrUpdateResource(curResource);
+		return "redirect:/resource/getAllResourcesByEventId/" + eventId;
 	}
 
-	@RequestMapping(value = "/offerResource/{resourceId}", method = RequestMethod.GET)
-	public String offerResource(@PathVariable("resourceId") int resourceId, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/offerResource/{resourceId}/{eventId}", method = RequestMethod.GET)
+	public String offerResource(@PathVariable("resourceId") Integer resourceId,
+			@PathVariable("eventId") Integer eventId, Model model, HttpSession session) {
 		Member member = (Member) session.getAttribute("member");
-
 		Resource curResource = resourceService.getResourceById(resourceId);
 		curResource.setStatus(ResourceStatus.RECEIVED);
 		curResource.setMember(member);
-		redirectAttributes.addFlashAttribute("event", curResource.getEvent());
 		resourceService.saveOrUpdateResource(curResource);
-		return "redirect:/resource/resourcelist";
+		return "redirect:/resource/getAllResourcesByEventId/" + eventId;
 	}
 
-	@RequestMapping(value = "/delete/{resourceId}", method = RequestMethod.GET)
-	public String deleteResource(@PathVariable("resourceId") int resourceId, Model model) {
+	@RequestMapping(value = "/delete/{resourceId}/{eventId}", method = RequestMethod.GET)
+	public String deleteResource(@PathVariable("resourceId") Integer resourceId,
+			@PathVariable("eventId") Integer eventId, Model model) {
 		resourceService.deleteResource(resourceId);
-		return "redirect:/resource/resourcelist";
+		return "redirect:/resource/getAllResourcesByEventId/" + eventId;
 	}
 
 	@RequestMapping(value = "/searchResource", method = RequestMethod.POST)

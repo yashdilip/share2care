@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Share2Care | New Circle</title>
+<title>Share2Care | Resource List</title>
 <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
@@ -35,18 +35,21 @@
 									<td th:text="${resource.quantity}"></td>
 									<td th:text="${resource.status}"></td>
 									<td th:text="${resource.importance}"></td>
-                                    <td th:text="${resource.member} ? ${resource.member.firstName} : ''"></td>
+									<td
+										th:text="${resource.member} ? ${resource.member.firstName} : ''"></td>
 									<div th:switch="${organizer}">
 										<p th:case="true">
-										<td><a th:href="${'/resource/editResource/' + resource.id}"
+										<td><a
+											th:href="${'/resource/editResource/' + resource.id +'/' + event.id}"
 											class="btn btn-warning">Edit</a></td>
-										<td><a th:href="${'/resource/delete/' + resource.id}"
+										<td><a
+											th:href="${'/resource/delete/' + resource.id +'/' + event.id}"
 											class="btn btn-danger">Delete</a></td>
 										</p>
 
 										<p th:case="false">
 										<td><a
-											th:href="${'/resource/offerResource/' + resource.id}"
+											th:href="${'/resource/offerResource/' + resource.id+'/' + event.id}"
 											class="btn btn-warning">Offer Resource</a></td>
 										</p>
 
