@@ -62,7 +62,7 @@ public class FileUploadRestController {
 			String filepath = Paths.get(directory, filename).toString();
 			System.out.println(filepath + "-------> " + directory + " -------->" + filename);
 			// Save the file locally
-			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("C:\\tmp", filename)));
 			stream.write(uploadfile.getBytes());
 			stream.close();
 		} catch (Exception e) {
