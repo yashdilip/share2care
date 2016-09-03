@@ -21,6 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,13 +41,16 @@ public class Event {
 	@JoinColumn(name="ownerId")
 	private Member owner;
 	
+	@Size(min=4)	
 	private String name;
 	private String description;
 	
+	@Future
 	@Temporal(TemporalType.TIMESTAMP)
 	//@DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss")
 	private Date startDateTime;
 	
+	@Future
 	@Temporal(TemporalType.TIMESTAMP)
 	//@DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss")
 	private Date endDateTime;

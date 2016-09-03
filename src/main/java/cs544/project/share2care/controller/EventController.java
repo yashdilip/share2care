@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cs544.project.share2care.domain.Event;
 import cs544.project.share2care.domain.EventCategory;
@@ -97,10 +99,11 @@ public class EventController {
 		return "fragments/memberMasterPage";				
 	}
 	
+	
 	@RequestMapping(value="/discover", method=RequestMethod.GET)
 	public String discoverEvents(Model model, Principal principal){
-		Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
-		List<Event> events= eventService.discoverNewEvents(owner.getMemberId(), owner.getMemberId(), EventVisibility.PUBLIC);
+		Member member = memberService.getLoggedInMemeberByMemberName(principal.getName());
+		List<Event> events = eventService.discoverNewEvents(EventVisibility.PUBLIC, member);
 		model.addAttribute("events", events);		
 		model.addAttribute("view", "users/user/discoverEvents");
 		return "fragments/memberMasterPage";				
@@ -122,11 +125,42 @@ public class EventController {
 		return "fragments/memberMasterPage";
 
 	}
+	
+	@RequestMapping(value="edit/{eventId}", method=RequestMethod.GET)
+	public String editEvent(Model model, @PathVariable int eventId){
+		Event event = eventService.findById(eventId);
+		model.addAttribute("event", event);
+		model.addAttribute("view", "users/user/createNewEvent");
+		return "fragments/memberMasterPage";
+		
+	}
+	
+	@Transactional	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String deleteEvent(Model model, @RequestParam("eventId") int eventId, Principal principal){
+		Long deletedRows = eventService.deleteById(eventId);
+		return "redirect:/event/myEvents";
+		
+	}
+	
+	@Transactional	
+	@RequestMapping(value="/search", method=RequestMethod.POST)
+	public String searchEventByName(Model model, @RequestParam("search-input") String searchInput){		
+		List<Event> eventsFound = eventService.findByVisibilityAndNameIgnoreCaseLike(EventVisibility.PUBLIC, searchInput);
+		model.addAttribute("events", eventsFound);
+		model.addAttribute("view", "users/user/events");
+		return "fragments/memberMasterPage";	
+		
+	}	
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String processEventCreate(@Valid @ModelAttribute("event") Event event, BindingResult result, HttpServletRequest request, Principal principal) throws IOException {
 		String view;
 		if (!result.hasErrors()) {
+			Date endDateTime = event.getEndDateTime();
+			if(!endDateTime.before(event.getStartDateTime())){
+				return "users/user/createNewEvent";
+			}
 			Member owner = memberService.getLoggedInMemeberByMemberName(principal.getName());
 			event.setOwner(owner);
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;

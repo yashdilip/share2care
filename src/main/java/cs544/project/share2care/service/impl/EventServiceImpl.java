@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cs544.project.share2care.domain.Event;
+import cs544.project.share2care.domain.EventParticipant;
 import cs544.project.share2care.domain.EventVisibility;
 import cs544.project.share2care.domain.Member;
+import cs544.project.share2care.repository.EventParticipantRepository;
 import cs544.project.share2care.repository.EventRepository;
 import cs544.project.share2care.service.IEventService;
 
@@ -24,6 +26,9 @@ import cs544.project.share2care.service.IEventService;
 public class EventServiceImpl implements IEventService {
 	@Autowired
 	private EventRepository eventRepository;
+	
+	@Autowired
+	private EventParticipantRepository eventParticipantRepository;
 
 	@Override
 	public void save(Event event) {
@@ -51,7 +56,7 @@ public class EventServiceImpl implements IEventService {
 
 	@Override
 	public List<Event> findUpcomingEvents(Member participant) {
-		return eventRepository.findByParticipantsParticipantAndStartDateTimeAfter(participant, new Date());
+		return eventRepository.findByParticipantsParticipantAndStartDateTimeBefore(participant, new Date());
 	}
 	
 	@Override
@@ -62,7 +67,7 @@ public class EventServiceImpl implements IEventService {
 
 	@Override
 	public List<Event> findPastEvents(Member participant) {
-		return eventRepository.findByParticipantsParticipantAndEndDateTimeBefore(participant, new Date());
+		return eventRepository.findByParticipantsParticipantAndEndDateTimeAfter(participant, new Date());
 	}	
 	
 	@Override
@@ -71,8 +76,11 @@ public class EventServiceImpl implements IEventService {
 	}
 	
 	@Override
-	public List<Event> discoverNewEvents(int memId1, int memId2, EventVisibility visibility){
-		return eventRepository.findByOwnerMemberIdIsNotAndParticipantsParticipantMemberIdIsNotAndVisibility(memId1, memId2, visibility);
+	public List<Event> discoverNewEvents(EventVisibility visibility, Member owner){
+		List<Event> futureEvents =  eventRepository.findByVisibilityAndStartDateTimeBefore(visibility, new Date());
+		List<Event> memEvents = eventRepository.findByOwnerOrParticipantsParticipant(owner, owner);		
+		futureEvents.removeAll(memEvents);
+		return futureEvents;
 	}
 
 	@Override
@@ -92,6 +100,23 @@ public class EventServiceImpl implements IEventService {
 	     Date date2 = cal.getTime();
 	     return eventRepository.findByVenueAddressCityIgnoreCaseAndStartDateTimeBetween(city, date1, date2);
 	}
+	
+	@Override
+	public List<Event> findByNameLike(String word){
+		return eventRepository.findByNameLike(word);
+	}
+	
+	@Override
+	public List<Event> findByVisibilityAndNameIgnoreCaseLike(EventVisibility visibility, String word){
+		return eventRepository.findByVisibilityAndNameContainingIgnoreCase(visibility, word);
+	}
+	
+	
+	
+	@Override
+	public Long deleteById(int eventId){
+		return eventRepository.deleteById(eventId);
+	}	
 
 
 }

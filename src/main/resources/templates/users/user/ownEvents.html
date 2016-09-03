@@ -11,8 +11,14 @@
 			<table class="table table-condensed">
 				<thead>
 					<tr>
-						<td colspan="4"><a th:href="*{'/event/'+ event.id}"><span
+						<td colspan="2"><a th:href="*{'/event/'+ event.id}"><span
 								th:text="${event.name}"></span></a></td>
+						<td><a th:href="*{'/event/edit/'+event.id}"
+							class="btn btn-warning" role="button">Edit</a></td>
+						<td><form th:action="@{/event/delete}" method="post">
+								<input type="hidden" name="eventId" th:value="${event.id}" /><input
+									type="submit" class="btn btn-danger" value="Delete" />
+							</form></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,9 +41,8 @@
 						<td><a
 							th:href="*{'/resource/getAllResourcesByEventId/'+event.id}">Resources
 								Needed</a></td>
-						<td><a
-							th:href="*{'/resource/addresource/'+event.id}">Add Resources
-								</a></td>
+						<td><a th:href="*{'/resource/addresource/'+event.id}">Add
+								Resources </a></td>
 						<td colspan="1"><a
 							th:href="*{'/event/participants/'+ event.id}">Participants</a></td>
 						<td><a th:href="*{'/event/joinRequests/'+ event.id}">Join

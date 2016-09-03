@@ -30,13 +30,21 @@ public class JMSMessageAdvice {
 	@After("execution(* cs544.project.share2care.service.impl.CircleService.saveNewCircle(..)) && args(circle, member)")
 	public void sendMessageToAll(Circle circle, Member member) throws MessagingException, NamingException {
 		printMessage("sending message to all participants ....");
-		String msg = "New Event is created : " + circle.getCircleName();
+		String msg = "New Circle is created : " + circle.getCircleName();
 		msg += "Details: ";
 		msg += " \n created by Name: " + circle.getOwner().getFirstName();
 
 		JMSMessageSender jmsSender = context.getBean("jmsSender", JMSMessageSender.class);
 		jmsSender.send(msg);
 		printMessage("Completed sending the message..");
+	}
+	@After("execution (* cs544.project.share2care.service.impl.EventServiceImpl.save(..)) && args(event)")
+	public void sendMessageOnNewEvent(Event event) throws MessagingException, NamingException  {
+		printMessage("New Event created: "+event.getName());
+		String msg = "New Event is created "+event.getName()+" "+"by "+event.getOwner().getFirstName();
+		JMSMessageSender jmsSender = context.getBean("jmsSender", JMSMessageSender.class);
+		jmsSender.send(msg);
+		
 	}
 
 	public void printMessage(String message) {

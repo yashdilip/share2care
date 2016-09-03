@@ -18,7 +18,7 @@ import cs544.project.share2care.domain.Member;
 public interface EventRepository extends JpaRepository<Event, Integer>{
 	/* find event(s) */
 	Event findById(int id);
-	List<Event> findAll();
+	List<Event> findAll();	
 	Page<Event> findAll(Pageable pageble);
 	List<Event> findByOwnerMemberIdOrderByStartDateTimeAsc(int memberId);
 	List<Event> findByOwnerMemberId(Integer memberId);
@@ -27,15 +27,28 @@ public interface EventRepository extends JpaRepository<Event, Integer>{
 	List<Event> findByVenueAddressCityIgnoreCaseAndStartDateTimeBefore(String city, Date date);
 	List<Event> findByVenueAddressCityIgnoreCaseAndStartDateTimeBetween(String city, Date date1, Date date2);
 	List<Event> findByVenueAddressCityIgnoreCaseAndStatus(String city, EventStatus status);	
-//	@Query("select e from Event e where e.participants.participant = :participant And e.startDateTime > CURRENT_DATE")
-//	List<Event> findUpcomingEvents(@Param("participant") Member participant);
-//    @Query("select e from Event e where e.participants.participant = :participant And e.endDateTime < CURRENT_DATE")
-//    List<Event> findPastEvents(@Param("participant") Member participant);
-    List<Event> findByParticipantsParticipantAndStartDateTimeAfter(Member participant, Date date);
-    List<Event> findByParticipantsParticipantAndEndDateTimeBefore(Member participant, Date date);
+	//Upcoming events
+    List<Event> findByParticipantsParticipantAndStartDateTimeBefore(Member participant, Date date);
+    
+    //Past events
+    List<Event> findByParticipantsParticipantAndEndDateTimeAfter(Member participant, Date date);
+    
+    //Searching events by name
+    List<Event> findByNameLike(String word);
+    List<Event> findByVisibilityAndNameContainingIgnoreCase(EventVisibility visibility, String word);
+    
     //Discover events I'm not going for yet or events that are not mine
-    List<Event> findByOwnerMemberIdIsNotAndParticipantsParticipantMemberIdIsNotAndVisibility(Integer memId1, Integer memId2, EventVisibility visibility);
+    List<Event> findByParticipantsParticipantNotAndEndDateTimeAfter(Member mem, Date date);
+    @Query("select e from Event e left join e.participants ep where e.owner <> :mem and ep.participant <> :mem and e.startDateTime > :date")
+    List<Event> findNewEvents(@Param("mem") Member member, @Param("date") Date date);
+    //All future time events (date is current date here)
+    List<Event> findByVisibilityAndStartDateTimeBefore(EventVisibility visibility, Date date);
+    //Find all events member owns or future and past events he is participant of
+    List<Event> findByOwnerOrParticipantsParticipant(Member owner, Member mem);
 	/* remove event(s) */
-	Long deleteByOwnerMemberId(int memberId);
+	Long deleteByOwnerMemberId(Integer memberId);
+	Long deleteById(Integer memberId);
+	
+	//List participants of an event
 	
 }

@@ -24,7 +24,7 @@ import cs544.project.share2care.service.IUserService;
  * @author Dilip
  *
  */
-// @Component
+//@Component
 public class MySchedule {
 
 	Logger logger = Logger.getLogger(MySchedule.class);
